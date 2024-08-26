@@ -1,3 +1,6 @@
+#项目介绍
+本项目是诺基亚的门户网站，使用angular9开发
+
 # IcesPortalEnterprise
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.12.
