@@ -1,0 +1,51 @@
+[
+    {
+        "id": 1,
+        "enbId": 1001,
+        "enbName": "SITE1",
+        "enbIp": "10.0.0.1",
+        "version": "FLF19A",
+        "latitude": 31.1212,
+        "longitude": 131.1321
+    },{
+        "id": 2,
+        "enbId": 1002,
+        "enbName": "SITE2",
+        "enbIp": "10.0.0.2",
+        "version": "FL19A",
+        "latitude": 31.1232,
+        "longitude": 131.1324
+    },{
+        "id": 3,
+        "enbId": 1003,
+        "enbName": "SITE3",
+        "enbIp": "10.0.0.3",
+        "version": "SBTS19A",
+        "latitude": 31.1218,
+        "longitude": 131.1333
+    },{
+        "id": 4,
+        "enbId": 1004,
+        "enbName": "SITE4",
+        "enbIp": "10.0.0.4",
+        "version": "SBTS19A",
+        "latitude": 31.1222,
+        "longitude": 131.1337
+    },{
+        "id": 5,
+        "enbId": 1005,
+        "enbName": "SITE5",
+        "enbIp": "10.0.0.5",
+        "version": "SBTS19A",
+        "latitude": 31.1228,
+        "longitude": 131.1331
+    },{
+        "id": 5,
+        "enbId": 1006,
+        "enbName": "SITE6",
+        "enbIp": "10.0.0.6",
+        "version": "SBTS19A",
+        "latitude": 31.1237,
+        "longitude": 131.1341
+    }
+]

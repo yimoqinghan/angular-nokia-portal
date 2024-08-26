@@ -1,0 +1,29 @@
+[
+    {
+        "period":"2020/8/1 10:00:00",
+        "enbId":1001,
+        "enbName":"site1",
+        "enbState":"on air",
+        "cellId":1,
+        "cellState":"unblocked",
+        "cellName":"cell-1"
+    },
+    {
+        "period":"2020/8/1 10:00:00",
+        "enbId":1001,
+        "enbName":"site1",
+        "enbState":"on air",
+        "cellId":2,
+        "cellState":"unblocked",
+        "cellName":"cell-2"
+    },
+    {
+        "period":"2020/8/1 10:00:00",
+        "enbId":1001,
+        "enbName":"site1",
+        "enbState":"on air",
+        "cellId":3,
+        "cellState":"unblocked",
+        "cellName":"cell-3"
+    }
+]

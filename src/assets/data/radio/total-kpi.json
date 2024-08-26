@@ -1,0 +1,362 @@
+[
+    {
+        "groupId": 1,
+        "groupName": "Accessibility",
+        "groupIndex": 1,
+        "kpis": [{
+            "kpiId": 1001,
+            "kpiName": "Paging congestion ratio (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 1002,
+            "kpiName": "Discarded RRC paging requests",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 1003,
+            "kpiName": "RRC paging requests",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 1004,
+            "kpiName": "RRC_CONN re-establishment success ratio (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 1005,
+            "kpiName": "RRC_CONN re-establishment attempts",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 1006,
+            "kpiName": "RRC_CONN establishment attempts",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 1007,
+            "kpiName": "RRC_CONN setup success ratio (%)",
+            "unit": "%",
+			"major": "1",
+			"view": "1"
+        },{
+            "kpiId": 1008,
+            "kpiName": "RRC_CONN setup completion times",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 1009,
+            "kpiName": "RRC_CONN setup attempts",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 1010,
+            "kpiName": "E-RAB setup success ratio (%)",
+            "unit": "%",
+			"major": "1",
+			"view": "1"
+        },{
+            "kpiId": 1011,
+            "kpiName": "E-RAB setup completion times",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 1012,
+            "kpiName": "E-RAB setup attempts",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 1013,
+            "kpiName": "UE Initial context setup success ratio (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 1014,
+            "kpiName": "UE initial context setup completion times",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 1015,
+            "kpiName": "UE initial context setup attempts",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 1016,
+            "kpiName": "Radio success ratio (%)",
+            "unit": "%",
+			"major": "1",
+			"view": "1"
+        },{
+            "kpiId": 1017,
+            "kpiName": "E-RAB congestion ratio (%)",
+            "unit": "%",
+			"major": "1",
+			"view": ""
+        },{
+            "kpiId": 1018,
+            "kpiName": "CSFB setup successes (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        }]
+    },{
+        "groupId": 2,
+        "groupName": "Retainability",
+        "groupIndex": 2,
+        "kpis": [{
+            "kpiId": 2001,
+            "kpiName": "E-RAB drop ratio (%)",
+            "unit": "%",
+			"major": "1",
+			"view": "1"
+        },{
+            "kpiId": 2002,
+            "kpiName": "Abnormal E-RAB release times",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 2003,
+            "kpiName": "Total E-RAB release times",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 2004,
+            "kpiName": "UE initial context drop ratio (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 2005,
+            "kpiName": "UE abnormal initial context release times",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 2006,
+            "kpiName": "Total initial context release times",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 2007,
+            "kpiName": "Radio drop ratio (%)",
+            "unit": "%",
+			"major": "1",
+			"view": ""
+        }]
+    },{
+        "groupId": 3,
+        "groupName": "Mobility",
+        "groupIndex": 3,
+        "kpis": [{
+            "kpiId": 3001,
+            "kpiName": "Intra-LTE HO success ratio (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 3002,
+            "kpiName": "Intra-LTE HO success times",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 3003,
+            "kpiName": "Intra-LTE HO attempts",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 3004,
+            "kpiName": "Redirects from LTE to 3G",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 3005,
+            "kpiName": "Intra eNB HO success ratio (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 3006,
+            "kpiName": "Intra eNB HO success times",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 3007,
+            "kpiName": "Intra eNB HO attempts",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 3008,
+            "kpiName": "Inter eNB S1 based HO success ratio (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 3009,
+            "kpiName": "Inter eNB S1 based HO success times",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 3010,
+            "kpiName": "Inter eNB S1 based HO attempts",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 3011,
+            "kpiName": "Inter eNB X2 based HO success ratio (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 3012,
+            "kpiName": "Inter eNB X2 based HO success times",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 3013,
+            "kpiName": "Inter eNB X2 based HO attempts",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 3014,
+            "kpiName": "HO success ratio (%)",
+            "unit": "%",
+			"major": "1",
+			"view": "1"
+        }]
+    },{
+        "groupId": 4,
+        "groupName": "Throughput",
+        "kpis": [{
+            "kpiId": 4001,
+            "kpiName": "PDCP SDU Volume Uplink (Mbyte)",
+            "unit": "Mbyte",
+			"major": "",
+			"view": "1"
+        },{
+            "kpiId": 4002,
+            "kpiName": "PDCP SDU Volume Downlink (Mbyte)",
+            "unit": "Mbyte",
+			"major": "",
+			"view": "1"
+        },{
+            "kpiId": 4003,
+            "kpiName": "Active_TTI_UL (second)",
+            "unit": "second",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 4004,
+            "kpiName": "Active_TTI_DL (second)",
+            "unit": "second",
+			"major": "",
+			"view": ""
+        }]
+    },{
+        "groupId": 5,
+        "groupName": "Integrity",
+        "groupIndex": 5,
+        "kpis": [{
+            "kpiId": 5001,
+            "kpiName": "PDCP_SDU_DELAY_DL_DTCH_MEAN (ms)",
+            "unit": "ms",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 5002,
+            "kpiName": "PDCP SDU loss ratio (%)",
+            "unit": "%",
+			"major": "1",
+			"view": ""
+        }]
+    },{
+        "groupId": 6,
+        "groupName": "Resource Load",
+        "groupIndex": 6,
+        "kpis": [{
+            "kpiId": 6001,
+            "kpiName": "PDCCH channel utilization rate (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 6002,
+            "kpiName": "PRACH channel utilization rate (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 6003,
+            "kpiName": "Paging channel utilization rate (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 6004,
+            "kpiName": "RRC Connected UEs Max",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 6005,
+            "kpiName": "Average Active UEs with Data in the Buffer UL",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 6006,
+            "kpiName": "Average Active UEs with Data in the Buffer DL",
+            "unit": "",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 6007,
+            "kpiName": "PRB UL utilization rate (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 6008,
+            "kpiName": "PRB DL utilization rate (%)",
+            "unit": "%",
+			"major": "",
+			"view": ""
+        },{
+            "kpiId": 6009,
+            "kpiName": "Active UE per Cell average",
+            "unit": "",
+			"major": "",
+			"view": "1"
+        },{
+            "kpiId": 6010,
+            "kpiName": "Active UE per Cell max",
+            "unit": "",
+			"major": "",
+			"view": ""
+        }]
+    }
+]

@@ -1,0 +1,75 @@
+[{
+    "id":1,
+    "enbId":1001,
+    "enbName":"SITE01",
+    "executeTime": "2020/8/1 10:12:31",
+    "executeType": "automatic",
+    "executor": "",
+    "status": "successful",
+    "result": "",
+    "expand": false,
+    "hardwares": [
+        {"hardware": "FHEA3", "serialNumber": "L6133518485"},
+        {"hardware": "FHEA2", "serialNumber": "L6122624868"},
+        {"hardware": "FSMF1", "serialNumber": "L6132631624"},
+        {"hardware": "FSPD1", "serialNumber": "L6132630431"},
+        {"hardware": "FSM3Trs1", "serialNumber": "L6132634624"}
+    ]
+},{
+    "id":2,
+    "enbId":1002,
+    "enbName":"SITE02",
+    "executeTime": "2020/8/1 10:13:31",
+    "executeType": "automatic",
+    "executor": "",
+    "status": "unsuccessful",
+    "result": "access denied",
+    "expand": false,
+    "hardwares": [
+    ]
+},{
+    "id":3,
+    "enbId":1002,
+    "enbName":"SITE03",
+    "executeTime": "2020/8/1 10:14:31",
+    "executeType": "automatic",
+    "executor": "",
+    "status": "pending",
+    "result": "",
+    "expand": false,
+    "hardwares": [
+    ]
+},{
+    "id":4,
+    "enbId":1004,
+    "enbName":"SITE04",
+    "executeTime": "2020/8/1 10:15:31",
+    "executeType": "automatic",
+    "executor": "",
+    "status": "in progress",
+    "result": "",
+    "expand": false,
+    "hardwares": [
+    ]
+},{
+    "id":6,
+    "enbId":1006,
+    "enbName":"SITE06",
+    "executeTime": "2020/8/1 10:16:31",
+    "executeType": "manual",
+    "executor": "admin",
+    "status": "successful",
+    "result": "",
+    "expand": false,
+    "hardwares": [
+        {"hardware": "FHEA3", "serialNumber": "L6133518485"},
+        {"hardware": "FHEA2", "serialNumber": "L6122624868"},
+        {"hardware": "FSMF1", "serialNumber": "L6132631624"},
+        {"hardware": "FSPD1", "serialNumber": "L6132630431"},
+        {"hardware": "FSM3Trs1", "serialNumber": "L6132634624"}
+    ]
+}]
+
+
+
+

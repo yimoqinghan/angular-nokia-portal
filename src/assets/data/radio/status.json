@@ -1,0 +1,38 @@
+[
+    {
+        "period":"2020/8/17  10:00:00",
+        "enbId":1001,
+        "enbName":"site1",
+        "enbSW":"SBTS19B_ENB_0000_001514_511995",
+        "enbState":"on air",
+        "trsState":"OK",
+        "cellId":1,
+        "adminState":"unblocked",
+        "operationalState":"enabled"
+    },
+    {
+        "period":"2020/8/17  10:00:00",
+        "enbId":1001,
+        "enbName":"site1",
+        "enbSW":"SBTS19B_ENB_0000_001514_511995",
+        "enbState":"on air",
+        "trsState":"OK",
+        "cellId":2,
+        "adminState":"unblocked",
+        "operationalState":"enabled"
+    },
+    {
+        "period":"2020/8/17  10:00:00",
+        "enbId":1001,
+        "enbName":"site1",
+        "enbSW":"SBTS19B_ENB_0000_001514_511995",
+        "enbState":"on air",
+        "trsState":"OK",
+        "cellId":3,
+        "adminState":"unblocked",
+        "operationalState":"enabled"
+    }
+]
+
+
+

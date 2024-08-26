@@ -1,0 +1,12 @@
+{
+    "urlTemplate":"assets/maps/{z}/{x}/{y}.png",
+    "minZoom":1,
+    "maxZoom":5,
+    "boundLeftLatitude": 85,
+    "boundLeftLongitude": -179.99999,
+    "boundRightLatitude": -85,
+    "boundRightLongitude": 179.99999,
+    "centerLatitude": 35,
+    "centerLongitude": 100,
+    "centerZoom": 5
+}

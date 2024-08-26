@@ -1,0 +1,51 @@
+[
+    {
+        "kpiId": 1007,
+        "kpiName": "RRC_CONN setup success ratio (%)",
+        "unit": "%",
+        "major": "1",
+        "view": ""
+    },{
+        "kpiId": 1010,
+        "kpiName": "E-RAB setup success ratio (%)",
+        "unit": "%",
+        "major": "1",
+        "view": ""
+    },{
+        "kpiId": 1016,
+        "kpiName": "Radio success ratio (%)",
+        "unit": "%",
+        "major": "1",
+        "view": ""
+    },{
+        "kpiId": 2001,
+        "kpiName": "E-RAB drop ratio (%)",
+        "unit": "%",
+        "major": "1",
+        "view": ""
+    },{
+        "kpiId": 3014,
+        "kpiName": "HO success ratio (%)",
+        "unit": "%",
+        "major": "1",
+        "view": ""
+    },{
+        "kpiId": 2007,
+        "kpiName": "Radio drop ratio (%)",
+        "unit": "%",
+        "major": "1",
+        "view": ""
+    },{
+        "kpiId": 1017,
+        "kpiName": "E-RAB congestion ratio (%)",
+        "unit": "%",
+        "major": "1",
+        "view": ""
+    },{
+        "kpiId": 5002,
+        "kpiName": "PDCP SDU loss ratio (%)",
+        "unit": "%",
+        "major": "1",
+        "view": ""
+    }
+]
