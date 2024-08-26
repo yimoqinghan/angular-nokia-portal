@@ -1,0 +1,75 @@
+/* You can add global styles to this file, and also import other style files */
+:host {
+    display                : flex;
+    text-rendering         : optimizeLegibility;
+    -webkit-font-smoothing : antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.app-layout {
+    height: 100vh;
+    background: #fff;
+    overflow: hidden;
+}
+
+nz-content {
+    margin: 0px 48px;
+}
+
+.inner-content {
+    padding   : 0px 24px;
+    background: #fff;
+    height    : 100%;
+}
+
+.ant-form-item{
+    margin-bottom: 6px;
+    margin-top: 12px;
+}
+
+.app-content {
+  padding: 0px 80px;
+  z-index: 90;
+  background: #fff;
+  height: 100%;
+  overflow-y: auto;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+[nz-row] {
+  width: 100%;
+}
+
+
+.div-row {
+  width: 100%;
+}
+
+.table_td {
+  padding: 4px 8px !important;
+}
+
+.app-title {
+  height: 48px;
+  line-height: 48px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.app-content {
+  padding: 0px 80px;
+  z-index: 90;
+  background: #fff;
+  height: 100%;
+  overflow-y: auto;
+}
