@@ -1,0 +1,39 @@
+<nz-layout style="background: url('../../../assets/images/bg.png'); height: 100%;background-repeat:no-repeat;background-size: 100% 100%;">
+    <div nz-row style="height: calc(25vh); width: 100%;">
+      <img style="height: 30px;margin-top: 20px;padding-left: 10px;" src="../../../assets/images/logo-nokia.png">
+    </div>
+    <div nz-row style="height: calc(50vh); width: 100%;">
+        <div nz-col nzSpan="12" style="height: 360px;text-align: center;">
+            <img  style="height: 500px;width: 500px"  src="../../../assets/images/logo-ices.png">
+        </div>
+        <div nz-col nzSpan="12" style="height: 360px; text-align: left;">
+            <div nz-row style="position: absolute; bottom: 0; width: 100%;">
+               <p style="color: #fff;font-size: 24px;width: 100%;">{{'login.sign' | translate }}</p>
+
+                <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()" style="width: 70%;">
+                    <nz-form-item style="margin-bottom: 24px;">
+                        <nz-form-control>
+                            <nz-input-group nzPrefixIcon="user">
+                                <input type="text" nz-input formControlName="userName" [placeholder]="'user.userName' | translate "  />
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item style="margin-bottom: 24px;">
+                        <nz-form-control>
+                            <nz-input-group nzPrefixIcon="lock">
+                                <input type="password" nz-input formControlName="password"  [placeholder]="'user.password' | translate "   />
+                            </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">{{'login.login' | translate }}</button>
+                    <div nz-row class="login-form-margin">
+                        <div nz-col [nzSpan]="12"></div>
+                        <div nz-col [nzSpan]="12">
+                            <a class="login-form-forgot" style="color: #fff;" (click)="forgotPasswordNotification()">{{'login.forgot' | translate }}</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</nz-layout>

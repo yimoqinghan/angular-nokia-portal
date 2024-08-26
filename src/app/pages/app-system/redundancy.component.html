@@ -1,0 +1,26 @@
+<div nz-row [ngStyle]="pageHeight()">
+    <div nz-col nzSpan="8" style="top:20px; align-items: center; vertical-align: top">
+        <div style="width: 100%;">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" >Master host IP</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <input nz-input [(ngModel)]="masterHost.value">
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label [nzSpan]="8" >Redundancy host IP</nz-form-label>
+              <nz-form-control [nzSpan]="14">
+                <input nz-input [(ngModel)]="redundancyHost.value">
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" ></nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <button (click)="saveSettings()" nz-button nzType="primary"><i nz-icon nzType="save" nzTheme="outline"></i>Save</button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</div>

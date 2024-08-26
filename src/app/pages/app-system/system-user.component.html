@@ -1,0 +1,107 @@
+<div nz-row [ngStyle]="contentHeight()" style="width: 100%;">
+  <div [ngStyle]="tableHeight()">
+    <ng-template #user_title>
+      <nz-form-item>
+        <nz-form-control [nzSpan]="24">
+          <input nz-input [(ngModel)]="userName" [placeholder]="'user.userName' | translate " style="width: 240px;"/>
+          <nz-divider nzType="vertical"></nz-divider>
+          <button nz-button nzType="primary" title="Search" (click)="searchUsers()"><i nz-icon nzType="search"></i>{{'enb.search' | translate }}
+          </button>
+          <nz-divider nzType="vertical"></nz-divider>
+          <button *ngIf="currentUser.admin == 1" nz-button nzType="primary" (click)="createUser()"><i nz-icon
+                                                                                                      nzType="plus"></i>{{'user.create' | translate }}
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </ng-template>
+    <ng-template #total_item>{{'enb.total' | translate }}: {{totalItem}}</ng-template>
+    <nz-table nzShowQuickJumper nzShowSizeChanger #userTable [nzTitle]="user_title" [nzData]="listOfUser" nzSize="small"
+              [nzLoading]="dataLoading" [nzShowTotal]="total_item" [nzTotal]="totalItem" nzPaginationType="small"
+              [nzPageSize]="20" [nzPageSizeOptions]="pageSizeOptions" [nzScroll]="tableScroll()">
+      <thead>
+      <tr>
+        <th nzWidth="15%" class="table_th" nzAlign="center">{{'user.account' | translate }}</th>
+        <th nzWidth="15%" class="table_th" nzAlign="center">{{'user.nickName' | translate }}</th>
+        <th nzWidth="20%" class="table_th" nzAlign="center">{{'user.email' | translate }}</th>
+        <th nzWidth="15%" class="table_th" nzAlign="center">{{'user.loginTime' | translate }}</th>
+        <th nzWidth="10%" class="table_th" nzAlign="center">{{'user.groups' | translate }}</th>
+        <th nzWidth="10%"  class="table_th" nzAlign="center" *ngIf="currentUser.admin == 1">{{'enb.action' | translate }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of userTable.data">
+        <td nzAlign="center" class="table_td">{{ data.account }}</td>
+        <td nzAlign="center" class="table_td">{{ data.name }}</td>
+        <td nzAlign="center" class="table_td">{{ data.email }}</td>
+        <td nzAlign="center" class="table_td">{{ data.loginTime }}</td>
+        <td nzAlign="center" class="table_td">
+          <a (click)="openGroup(data)">{{ data.groups }}</a>
+        </td>
+        <td nzAlign="center" class="table_td" *ngIf="currentUser.admin == 1">
+          <div *ngIf="data.id !== 2">
+            <a (click)="updateUser(data)" title="Update User">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="showDeleteUserModal(data)" title="Delete User" *ngIf="currentUser.id != data.id">
+              <i nz-icon nzType="delete" nzTheme="outline"></i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="isDeleteUser" [nzTitle]="'tip.delete' | translate "  (nzOnCancel)="cancel()" (nzOnOk)="deleteUser()">
+  <p>{{'user.removeUser' | translate }}</p>
+</nz-modal>
+
+<!-- 用户编辑窗口 -->
+<nz-modal [(nzVisible)]="visibleUser" [nzTitle]="titleUser" (nzOnCancel)="closeUser()" (nzOnOk)="saveUser()"
+          [nzOkText]="'user.save' | translate "   [nzCancelText]="'user.close' | translate " >
+  <ng-container>
+    <nz-form-item *ngIf="newUser == true">
+      <nz-form-label nzRequired [nzSpan]="6" nzTooltipTitle="Used for user login">
+        {{'user.account' | translate }}
+      </nz-form-label>
+      <nz-form-control [nzSpan]="17">
+        <input nz-input [(ngModel)]="user.account">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="6">{{'user.nickName' | translate }}</nz-form-label>
+      <nz-form-control [nzSpan]="17">
+        <input nz-input [(ngModel)]="user.name">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">{{'user.email' | translate }}</nz-form-label>
+      <nz-form-control [nzSpan]="17">
+        <input nz-input type="email" [(ngModel)]="user.email">
+      </nz-form-control>
+    </nz-form-item>
+  </ng-container>
+</nz-modal>
+
+<!-- 用户绑定的用户组查看窗口 -->
+<nz-modal [(nzVisible)]="visibleGroup" [nzTitle]="titleGroup" (nzOnCancel)="closeGroup()" [nzFooter]="null">
+  <ng-container>
+    <nz-table #groupTable [nzData]="listOfGroup" nzSize="small" nzPaginationType="small">
+      <thead>
+      <tr>
+        <th nzWidth="15%" nzAlign="center">{{'user.groups' | translate }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of groupTable.data">
+        <td nzAlign="center" class="table_td">{{ data.name }}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </ng-container>
+</nz-modal>
+

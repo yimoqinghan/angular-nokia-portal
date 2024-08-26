@@ -1,0 +1,120 @@
+<div nz-row [ngStyle]="contentHeight()" style="width: 100%;">
+    <div [ngStyle]="tableHeight()">
+        <ng-template #permission_title>
+            <nz-form-item>
+                <nz-form-control [nzSpan]="24">
+                    <button nz-button nzType="primary" (click)="searchPermissions()"><i nz-icon nzType="search"></i>{{'enb.search' | translate }}</button>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <button nz-button nzType="primary" (click)="createPermission()"><i nz-icon nzType="plus"></i>{{'user.create' | translate }}</button>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <button nz-button nzType="primary" (click)="openPassword()" nzDanger><i nz-icon nzType="clear"></i>{{'permission.resetUserPassword' | translate }}</button>
+                </nz-form-control>
+            </nz-form-item>
+        </ng-template>
+        <ng-template #total_item>{{'enb.total' | translate }}: {{totalItem}}</ng-template>
+        <nz-table nzShowQuickJumper nzShowSizeChanger #permissionTable [nzTitle]="permission_title" [nzData]="listOfPermission" nzSize="small"
+            [nzLoading]="dataLoading" [nzShowTotal]="total_item" [nzTotal]="totalItem" nzPaginationType="small"
+            [nzPageSize]="20" [nzPageSizeOptions]="pageSizeOptions" [nzScroll]="tableScroll()">
+            <thead>
+                <tr>
+                    <th nzWidth="30%"  class="table_th" nzAlign="center">{{'permission.permission' | translate }}</th>
+                    <th nzWidth="10%"  class="table_th" nzAlign="center">{{'permission.resource' | translate }}</th>
+                    <th nzWidth="10%"  class="table_th" nzAlign="center">{{'enb.action' | translate }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of permissionTable.data">
+                    <td nzAlign="center" class="table_td">{{ data.name }}</td>
+                    <td nzAlign="center" class="table_td">
+                        <button *ngIf="data.id !== 1" (click)="updateSubmenu(data)" nzSize="small" nz-button nzType="primary">
+                            <i nz-icon nzType="menu"></i>{{'permission.menu' | translate }}</button>
+                        <nz-divider *ngIf="data.id !== 1" nzType="vertical"></nz-divider>
+                        <button (click)="updateGroup(data)" nzSize="small" nz-button nzType="primary">
+                            <i nz-icon nzType="user"></i>{{'permission.groups' | translate }}</button>
+                    </td>
+                    <td nzAlign="center" class="table_td">
+                        <div *ngIf="data.id !== 1">
+                            <a (click)="updatePermission(data)"><i nz-icon nzType="edit" title="Update"></i></a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a (click)="showDeletePermissionModal(data)"><i nz-icon nzType="delete" title="Delete"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>
+
+<nz-modal [(nzVisible)]="isDeletePermission" [nzTitle]="'tip.delete' | translate "  (nzOnCancel)="cancel()" (nzOnOk)="deletePermission()">
+  <p>{{'permission.removeGroup' | translate }}</p>
+</nz-modal>
+<!-- 重置账号密码 -->
+<nz-modal [(nzVisible)]="visiblePassword" [nzTitle]="'permission.reset' | translate "  (nzOnCancel)="colsePassword()" (nzOnOk)="resetUserPassword()"
+          [nzOkText]="'permission.resetUserPassword' | translate "   [nzCancelText]="'user.close' | translate ">
+    <ng-container>
+        <nz-form-item>
+            <nz-form-label nzRequired [nzSpan]="8">{{'user.account' | translate }}</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+                <input nz-input [(ngModel)]="account">
+            </nz-form-control>
+        </nz-form-item>
+     <!-- <nz-form-item>
+        <nz-form-label [nzSpan]="8">Default Pwd</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+           12345678
+        </nz-form-control>
+      </nz-form-item>-->
+    </ng-container>
+</nz-modal>
+
+<!-- 权限编辑 -->
+<nz-modal [(nzVisible)]="visiblePermission" [nzTitle]="titlePermission" (nzOnCancel)="closePermisstion()" (nzOnOk)="savePermission()"  [nzOkText]="'user.save' | translate "   [nzCancelText]="'user.close' | translate ">
+    <ng-container>
+        <nz-form-item>
+            <nz-form-label nzRequired [nzSpan]="6">{{'permission.permission' | translate }}</nz-form-label>
+            <nz-form-control [nzSpan]="17">
+                <input nz-input [(ngModel)]="permission.name">
+            </nz-form-control>
+        </nz-form-item>
+    </ng-container>
+</nz-modal>
+
+<!-- 菜单编辑 -->
+<nz-modal [(nzVisible)]="visibleSubmenu" [nzTitle]="'permission.setupMenu' | translate " (nzOnCancel)="closeSubmenu()" (nzOnOk)="savePermissionSubmenus()"
+          [nzOkText]="'user.save' | translate "   [nzCancelText]="'user.close' | translate " nzWidth="400px">
+    <ng-container>
+        <nz-tree [nzData]="submenus" nzCheckable nzMultiple [nzCheckedKeys]="defaultCheckedKeys" (nzCheckBoxChange)="nzEvent($event)"></nz-tree>
+    </ng-container>
+</nz-modal>
+
+<!-- 用户编辑 -->
+<nz-modal [(nzVisible)]="visibleUser" [nzTitle]="'permission.setupUserGroup' | translate " (nzOnCancel)="closeUser()" (nzOnOk)="savePermissionUser()" [nzOkText]="'user.save' | translate "   [nzCancelText]="'user.close' | translate "  nzWidth="800px">
+    <ng-container>
+        <ng-template #empty_table></ng-template>
+        <nz-transfer nzShowSearch [nzDataSource]="listOfItem" [nzShowSelectAll]="false" [nzTitles]="['[来源]', '[已选择]']"
+            [nzRenderList]="[renderListSelection, renderListSelection]" (nzChange)="changeItems($event)">
+            <ng-template #renderListSelection let-items let-direction="direction" let-stat="stat" let-disabled="disabled"
+                let-onItemSelectAll="onItemSelectAll" let-onItemSelect="onItemSelect">
+                <nz-table #tableSelection [nzData]="items" nzSize="small" [nzPageSize]="50" [nzNoResult]="empty_table" [nzScroll]="tableScroll()">
+                    <thead>
+                        <tr>
+                            <th class="table_th"  nzWidth="10%" nzAlign="center" [nzChecked]="stat.checkAll"
+                                [nzIndeterminate]="stat.checkHalf" (nzCheckedChange)="onItemSelectAll($event)">
+                            </th>
+                            <th nzWidth="20%" nzAlign="center">{{'permission.groupName' | translate }}</th>
+<!--                            <th nzWidth="30%" nzAlign="center">Nickname</th>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of tableSelection.data" (click)="onItemSelect(data)">
+                            <td nzAlign="center" class="table_td" [nzChecked]="data.checked"
+                                (nzCheckedChange)="onItemSelect(data)"></td>
+<!--                            <td nzAlign="center" class="table_td">{{ data.account }}</td>-->
+                            <td nzAlign="center" class="table_td">{{ data.name}}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </ng-template>
+        </nz-transfer>
+    </ng-container>
+</nz-modal>

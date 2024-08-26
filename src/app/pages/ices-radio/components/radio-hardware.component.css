@@ -1,0 +1,29 @@
+.table_th {
+    padding: 12px 8px;
+}
+
+.table_td {
+    padding: 10px 8px;
+}
+
+.table_td_1 {
+    padding: 2px 8px !important;
+}
+
+/*重写table样式*/
+/* :host::ng-deep table {
+    table-layout: fixed !important;
+}
+ 
+:host::ng-deep .ant-table-row > td, th{
+    white-space:nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+:host::ng-deep th {
+    white-space:nowrap;
+}
+
+:host::ng-deep .ant-table-scroll table {
+    width: fit-content;
+} */

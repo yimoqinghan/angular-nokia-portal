@@ -1,0 +1,69 @@
+
+<nz-layout class="app-layout">
+    <app-nokia-header></app-nokia-header>
+
+    <nz-content>
+        <div class="inner-content">
+            <div nz-row style="height: 50px;">
+                <ul nz-menu nzMode="horizontal" style="color: black; margin-bottom: 0px;font-size: 20px;font-weight: 900;" (click)="openNavigation()">
+                    <li nz-menu-item nzSelected>
+                      REMS
+                    </li>
+                </ul>
+            </div>
+            <div style="height: 90%;">
+                <app-radio-overview *ngIf="components.overview"></app-radio-overview>
+
+                <app-radio-monitor *ngIf="components.radioMonitor"></app-radio-monitor>
+                <app-radio-state *ngIf="components.radioState"></app-radio-state>
+                <app-radio-alarm *ngIf="components.radioAlarm"></app-radio-alarm>
+                <app-radio-kpis *ngIf="components.radioKpis"></app-radio-kpis>
+                <app-radio-kpis-major *ngIf="components.radioKpisMajor"></app-radio-kpis-major>
+
+                <app-radio-hardware *ngIf="components.radioHardware"></app-radio-hardware>
+                <app-radio-backups *ngIf="components.radioBackups"></app-radio-backups>
+
+                <app-radio-enb *ngIf="components.radionSite"></app-radio-enb>
+                <app-radio-threshold *ngIf="components.radioThreshold"></app-radio-threshold>
+            </div>
+        </div>
+    </nz-content>
+
+    <app-nokia-footer></app-nokia-footer>
+</nz-layout>
+
+
+
+
+<nz-drawer
+      [nzClosable]="false"
+      [nzVisible]="navigationVisible"
+      nzPlacement="left"
+      nzMaskClosable="true"
+      nzMask="true"
+      [nzTitle]="engineDrawerTitle"
+      (nzOnClose)="closeNavigation()"
+      nzWidth="310px"
+    >
+    <ng-template #engineDrawerTitle>
+        <div style="float: right;">
+            <a (click)="closeNavigation()" style="right: 10px;"><i nz-icon nzType="left"></i></a>
+        </div>
+    </ng-template>
+    <ul>
+        <div *ngFor="let group of menuGroups">
+            <p class="menu-group">{{group.name}}</p>
+            <div *ngIf="group.members.length == 0">
+                <a><i nz-icon nzType="ellipsis" nzTheme="outline"></i></a>
+            </div>
+            <div *ngFor="let menu of group.members">
+                <div *ngIf="!menu.disable">
+                  <a class="menu" (click)="menuNavigation(menu.flag)">{{menu.name}}</a>
+                </div>
+                <div *ngIf="menu.disable">
+                  <a class="menu" (click)="menuNavigation(menu.flag)" disabled>{{menu.name}}</a>
+                </div>
+            </div>
+        </div>
+    </ul>
+</nz-drawer>

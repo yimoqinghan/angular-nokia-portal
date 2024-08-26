@@ -1,0 +1,41 @@
+<nz-layout class="app-layout">
+    <app-nokia-header #pageHeader [pageHref]="pageHref"></app-nokia-header>
+    <div nz-row class="app-menu" style="padding: 0px 50px;">
+        <ul nz-menu nzMode="horizontal" style="height: 48px;line-height: 48px;font-size: 16px;font-weight: 500;">
+            <li nz-menu-item (click)="navigation('systemUser')" nzSelected>
+              {{'user.user' | translate }}
+            </li>
+            <li nz-menu-item (click)="navigation('systemUsergrp')">
+              {{'group.group' | translate }}
+            </li>
+            <li nz-menu-item (click)="navigation('permission')">
+              {{'permission.permission' | translate }}
+            </li>
+            <li nz-menu-item (click)="navigation('googleMap')">
+              {{'map.config' | translate }}
+            </li>
+            <li nz-menu-item (click)="navigation('license')">
+              {{'license.license' | translate }}
+            </li>
+
+            <li nz-menu-item (click)="navigation('historyConfig')">
+              {{'history.saving' | translate }}
+            </li>
+
+<!--            <li nz-menu-item (click)="navigation('redundancy')">-->
+<!--              Redundant disaster backup config-->
+<!--            </li>-->
+        </ul>
+    </div>
+    <div nz-row class="app-content" [ngStyle]="contentStyle()">
+        <app-system-user *ngIf="hrefMap.get('systemUser')"></app-system-user>
+        <app-system-usergrp *ngIf="hrefMap.get('systemUsergrp')"></app-system-usergrp>
+        <app-permission *ngIf="hrefMap.get('permission')"></app-permission>
+        <app-google-map *ngIf="hrefMap.get('googleMap')"></app-google-map>
+        <app-license *ngIf="hrefMap.get('license')"></app-license>
+        <app-history-config *ngIf="hrefMap.get('historyConfig')"></app-history-config>
+        <app-redundancy *ngIf="hrefMap.get('redundancy')"></app-redundancy>
+    </div>
+
+    <app-nokia-footer #pageFooter></app-nokia-footer>
+</nz-layout>

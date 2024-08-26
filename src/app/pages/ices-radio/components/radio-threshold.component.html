@@ -1,0 +1,115 @@
+<div nz-row class="app-title">
+  KPIS Mgmt.
+</div>
+<nz-table #thresholdTable [nzData]="listOfThreshold" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="totalItem"
+          [nzLoading]="dataLoading" [nzPageSizeOptions]="pageOptions" [nzFrontPagination]="false" nzShowQuickJumper nzShowSizeChanger
+          [nzShowTotal]="total_template_0" (nzPageIndexChange)="nzPageIndexChange($event)"
+          (nzPageSizeChange)="nzPageSizeChange($event)" [nzScroll]="tableScroll()">
+    <thead>
+    <ng-template #total_template_0>
+      Total: {{totalItem}}
+    </ng-template>
+        <tr>
+            <th nzWidth="15%" class="table_th" nzAlign="center">KPI Name</th>
+            <th class="table_th" nzAlign="center">interval</th>
+            <th class="table_th" nzAlign="center">Comparison relation</th>
+            <th class="table_th" nzAlign="center">Threshold</th>
+            <th class="table_th" nzAlign="center">Auxiliary relation 1</th>
+            <th class="table_th" nzAlign="center">Auxiliary threshold 1</th>
+            <th class="table_th" nzAlign="center">Auxiliary relation 2</th>
+            <th class="table_th" nzAlign="center">Auxiliary threshold 2</th>
+            <th class="table_th" nzAlign="center">Abnormal period</th>
+            <th class="table_th" nzAlign="center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of thresholdTable.data">
+            <td class="table_td" [title]="data.kpiName">{{data.kpiName}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.interval">{{data.interval}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.relation">{{data.relation}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.threshold">{{data.threshold}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.auxRelation1">{{data.auxRelation1}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.auxThreshold1">{{data.auxThreshold1}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.auxRelation2">{{data.auxRelation2}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.auxThreshold2">{{data.auxThreshold2}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.abnormalPeriod">{{data.abnormalPeriod}}</td>
+            <td class="table_td" nzAlign="center">
+                <a (click)="thresholdEdit(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></a>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Edit threshold" (nzOnCancel)="closeEditModal()" (nzOnOk)="thresholdSave()" nzOkText="Save" nzWidth="800">
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6">KPI Name</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <span>{{threshold.kpiName}}</span>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6">Comparison relation</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <nz-select [(ngModel)]="threshold.relation">
+                <nz-option *ngFor="let opt of listOfRelation" [nzLabel]="opt" [nzValue]="opt"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6">Threshold</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <input nz-input [(ngModel)]="threshold.threshold">
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6">Auxiliary KPI 1</nz-form-label>
+        <!--<nz-form-control nzSpan="16">
+            <span>{{threshold.kpiName1}}</span>
+        </nz-form-control>-->
+    </nz-form-item>
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6">Auxiliary relation 1</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <nz-select [(ngModel)]="threshold.auxRelation1">
+                <nz-option *ngFor="let opt of listOfRelation" [nzLabel]="opt" [nzValue]="opt"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6">Auxiliary Threshold 1</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <input nz-input [(ngModel)]="threshold.auxThreshold1">
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6">Auxiliary KPI 2</nz-form-label>
+        <!--<nz-form-control nzSpan="16">
+            <span>{{threshold.kpiName2}}</span>
+        </nz-form-control>-->
+    </nz-form-item>
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6">Auxiliary relation 2</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <nz-select [(ngModel)]="threshold.auxRelation2">
+                <nz-option *ngFor="let opt of listOfRelation" [nzLabel]="opt" [nzValue]="opt"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6">Auxiliary Threshold 2</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <input nz-input [(ngModel)]="threshold.auxThreshold2">
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6">Number of Abnormal period</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <nz-input-number [(ngModel)]="threshold.abnormalPeriod" nzMin="1" nzStep="1"></nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
+
+</nz-modal>

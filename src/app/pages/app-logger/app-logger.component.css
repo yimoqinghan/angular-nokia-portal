@@ -1,0 +1,31 @@
+.inner-content-f {
+    padding-left: 50px;
+    padding-right: 50px;
+   padding-bottom: 50px;
+  /* background: #fff; */
+  background: #141729;
+  /* height: calc(75vh); */
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+:host .ant-layout {
+  background: #fff !important;
+}
+
+:host .ant-layout-header{
+  background: #fff !important;
+}
+
+:host .ant-layout-footer{
+  background: #fff !important;
+}
+
+:host .ant-list-split .ant-list-item {
+  border-bottom: 0px solid #e8e8e8 !important;
+}
+
+:host .ant-list-sm .ant-list-item {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}

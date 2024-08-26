@@ -1,0 +1,100 @@
+<div nz-row class="app-title">
+  {{'map.map' | translate }}
+</div>
+<div nz-row style="height: 100%;width: 100%;">
+    <div id="div_01" nz-col style="height: 95%;width: 100%;">
+        <div id="leaflet_map_div" style="width: 100%;height: 95%;"></div>
+    </div>
+
+    <div id="div_02" *ngIf="btsViewDisplay" nz-col style="height: 95%;width: 50%;overflow: scroll">
+        <div>
+          <button (click)="backToTop()" *ngIf="btnDisplay" title="expand the map">&gt;&gt;</button>
+        </div>
+        <div nz-row style="margin-left: 10px;height: 100%;display: flex;">
+            <div nz-row style="width: 100%;align-self: center;">
+                <ng-template #site_detail>
+                    <nz-descriptions [nzTitle]="'基站: ' + site.enbName" nzBordered="false" nzSize="small"
+                        style="width: 100%;">
+
+                      <nz-descriptions-item [nzTitle]="'enb.id' | translate ">{{ site.enbId }}</nz-descriptions-item>
+                      <nz-descriptions-item [nzTitle]="'enb.name' | translate " [nzSpan]="2">{{ site.enbName }}</nz-descriptions-item>
+                      <nz-descriptions-item [nzTitle]="'enb.ip' | translate ">{{ site.enbIp }}</nz-descriptions-item>
+                      <nz-descriptions-item [nzTitle]="'enb.sw' | translate "  [nzSpan]="2">{{ site.version }}</nz-descriptions-item>
+                      <nz-descriptions-item [nzTitle]="'enb.state' | translate ">{{ site.state }}</nz-descriptions-item>
+                      <nz-descriptions-item [nzTitle]="'status.TRSState' | translate "  [nzSpan]="2">{{ site.trsState }}</nz-descriptions-item>
+                      <nz-descriptions-item [nzTitle]="'enb.longitude' | translate ">{{ site.longitude }}</nz-descriptions-item>
+                      <nz-descriptions-item [nzTitle]="'enb.latitude' | translate ">{{ site.latitude }}</nz-descriptions-item>
+                    </nz-descriptions>
+                </ng-template>
+                <nz-table #tableAlarms [nzData]="site.alarms" [nzLoading]="dataLoading" [nzTitle]="site_detail" nzPageSize="5" nzSize="small">
+                    <thead>
+                        <tr>
+                          <th class="table_th" nzAlign="center">{{'alarm.alarmNo' | translate }}</th>
+                          <th class="table_th" nzAlign="center">{{'alarm.faultId' | translate }}</th>
+                          <th class="table_th" nzAlign="center">{{'alarm.alarmDetail' | translate }}</th>
+                          <th class="table_th" nzAlign="center">{{'alarm.alarmTime' | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of tableAlarms.data">
+                            <td class="table_td" nzAlign="center" [title]="data.alarmNo">{{data.alarmNo}}</td>
+                            <td class="table_td" nzAlign="center" [title]="data.faultId">{{data.faultId}}</td>
+                            <td class="table_td" nzAlign="center" [title]="data.alarmDetail">{{data.alarmDetail}}</td>
+                            <td class="table_td" nzAlign="center" [title]="data.alarmTime">{{data.alarmTime}}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+
+              <nz-tabset [nzType]="'card'" nzSize="small" style="width: 100%">
+                <nz-tab  [nzTitle]="'基站指标'">
+                  <nz-table #tableKpis [nzData]="site.enbKpi"  nzPageSize="5" nzSize="small">
+                    <thead>
+                    <tr>
+                      <th class="table_th" nzAlign="center">{{'kpi.name' | translate }}</th>
+                      <th class="table_th" nzAlign="center">{{'kpi.period' | translate }}</th>
+                      <th class="table_th" nzAlign="center">{{'kpi.value' | translate }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let data of tableKpis.data">
+                      <!--<td class="table_td" nzAlign="center" [title]="data.kpiId">{{data.kpiId}}</td>-->
+                      <td class="table_td" nzAlign="center" [title]="data.kpiName">{{data.kpiName}}</td>
+                      <td class="table_td" nzAlign="center" [title]="data.period">{{data.period}}</td>
+                      <td class="table_td" nzAlign="center" [title]="data.kpiValue">{{data.kpiValue}}</td>
+                    </tr>
+                    </tbody>
+                  </nz-table>
+                </nz-tab>
+              </nz-tabset>
+
+                <nz-tabset [nzType]="'card'" nzSize="small">
+                    <nz-tab *ngFor="let cell of site.cells" [nzTitle]="'小区指标-' + cell.cellId">
+                        <ng-template #cell_detail>
+                            <nz-descriptions nzBordered="false" nzSize="small">
+                                <!-- <nz-descriptions-item nzTitle="TRS status">{{ cell.trsState }}</nz-descriptions-item> -->
+                                <nz-descriptions-item [nzTitle]="'kpi.adminState' | translate ">{{ cell.adminState }}</nz-descriptions-item>
+                                <nz-descriptions-item [nzTitle]="'kpi.operState' | translate ">{{ cell.operationalState }}</nz-descriptions-item>
+                            </nz-descriptions>
+                        </ng-template>
+                        <nz-table #tableCellKpis [nzData]="cell.kpis" [nzTitle]="cell_detail" nzPageSize="5" nzSize="small">
+                            <thead>
+                                <tr>
+                                  <th class="table_th" nzAlign="center">{{'kpi.name' | translate }}</th>
+                                  <th class="table_th" nzAlign="center">{{'kpi.period' | translate }}</th>
+                                  <th class="table_th" nzAlign="center">{{'kpi.value' | translate }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of tableCellKpis.data">
+                                    <td class="table_td" nzAlign="center" [title]="data.kpiName">{{data.kpiName}}</td>
+                                    <td class="table_td" nzAlign="center" [title]="data.period">{{data.period}}</td>
+                                    <td class="table_td" nzAlign="center" [title]="data.kpiValue">{{data.kpiValue}}</td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </nz-tab>
+                </nz-tabset>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+<div nz-row [ngStyle]="pageHeight()">
+    <div nz-col nzSpan="8" style="height: 100%; display: flex; align-items: center; vertical-align: top">
+        <div style="width: 100%;">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" >{{'map.url' | translate }}</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <input nz-input [(ngModel)]="map_url_confg.value">
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" >{{'map.maxZoom' | translate }}</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <nz-input-number [(ngModel)]="max_zoom_confg.value" [nzMin]="1" [nzMax]="20" [nzStep]="1" style="width: 100%;"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" >{{'map.minZoom' | translate }}</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <nz-input-number [(ngModel)]="min_zoom_confg.value" [nzMin]="1" [nzMax]="20" [nzStep]="1" style="width: 100%;"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" >{{'map.defaultZoom' | translate }}</nz-form-label>
+                <nz-form-control [nzSpan]="14">
+                    <nz-input-number [(ngModel)]="default_zoom_confg.value" [nzMin]="1" [nzMax]="20" [nzStep]="1" style="width: 100%;"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" >{{'map.center' | translate }}</nz-form-label>
+                <nz-form-control [nzSpan]="6">
+                    <!-- <input nz-input placeholder="Longitude" [(ngModel)]="center_longitude_confg.value"> -->
+                    <nz-input-number nzPlaceHolder="Longitude" [(ngModel)]="center_longitude_confg.value" [nzMin]="-180" [nzMax]="180" [nzStep]="0.01" style="width: 100%;"></nz-input-number>
+                </nz-form-control>
+                <nz-form-control [nzSpan]="2"></nz-form-control>
+                <nz-form-control [nzSpan]="6">
+                    <!-- <input nz-input placeholder="Latitude" [(ngModel)]="center_latitude_confg.value"> -->
+                    <nz-input-number nzPlaceHolder="Latitude" [(ngModel)]="center_latitude_confg.value" [nzMin]="-85" [nzMax]="85" [nzStep]="0.01" style="width: 100%;"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" >{{'map.left' | translate }}</nz-form-label>
+                <nz-form-control [nzSpan]="6">
+                    <!-- <input nz-input placeholder="Longitude" [(ngModel)]="left_longitude_confg.value"> -->
+                    <nz-input-number nzPlaceHolder="Longitude" [(ngModel)]="left_longitude_confg.value" [nzMin]="-180" [nzMax]="180" [nzStep]="0.01" style="width: 100%;"></nz-input-number>
+                </nz-form-control>
+                <nz-form-control [nzSpan]="2"></nz-form-control>
+                <nz-form-control [nzSpan]="6">
+                    <!-- <input nz-input placeholder="Latitude" [(ngModel)]="left_latitude_confg.value"> -->
+                    <nz-input-number nzPlaceHolder="Latitude" [(ngModel)]="left_latitude_confg.value" [nzMin]="-85" [nzMax]="85" [nzStep]="0.01" style="width: 100%;"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" >{{'map.lower' | translate }}</nz-form-label>
+                <nz-form-control [nzSpan]="6">
+                    <!-- <input nz-input placeholder="Longitude" [(ngModel)]="right_longitude_confg.value"> -->
+                    <nz-input-number nzPlaceHolder="Longitude" [(ngModel)]="right_longitude_confg.value" [nzMin]="-180" [nzMax]="180" [nzStep]="0.01" style="width: 100%;"></nz-input-number>
+                </nz-form-control>
+                <nz-form-control [nzSpan]="2"></nz-form-control>
+                <nz-form-control [nzSpan]="6">
+                    <!-- <input nz-input placeholder="Latitude" [(ngModel)]="right_latitude_confg.value"> -->
+                    <nz-input-number nzPlaceHolder="Latitude" [(ngModel)]="right_latitude_confg.value" [nzMin]="-85" [nzMax]="85" [nzStep]="0.01" style="width: 100%;"></nz-input-number>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="8" >{{'enb.action' | translate }}</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <button (click)="saveSettings()" nz-button nzType="primary"><i nz-icon nzType="save" nzTheme="outline"></i>{{'user.save' | translate }}</button>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <button (click)="refreshMap()" nz-button nzType="primary">{{'map.refresh' | translate }}</button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-col nzSpan="16" style="height: 80%; width: 90%;">
+        <div nz-row id="setting_leaflet_map_div" [ngStyle]="mapHeight()"></div>
+        <div nz-row>
+            <div style="width: 100px;float: left;">{{'map.zoom' | translate }}: {{zoom}}</div> &nbsp;
+            <div style="width: 250px;float: left;">{{'enb.longitude' | translate }}: {{longitude}}</div> &nbsp;
+            <div style="width: 250px;float: left;">{{'enb.latitude' | translate }}: {{latitude}}</div>
+        </div>
+    </div>
+</div>

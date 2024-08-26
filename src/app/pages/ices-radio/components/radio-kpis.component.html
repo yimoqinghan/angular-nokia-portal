@@ -1,0 +1,125 @@
+<div nz-row class="app-title">
+  {{'kpi.kpi' | translate }}
+</div>
+<nz-form-item>
+  <nz-form-control nzSpan="24">
+    <!--<button nzSize="small" nz-button nzType="primary" nz-popover [nzPopoverContent]="filterContentTemplate"  nzPopoverTrigger="click"  nzPopoverPlacement="right"><i nz-icon nzType="filter" nzTheme="outline"></i>Filter</button>
+    <nz-divider nzType="vertical"></nz-divider>-->
+    <button nzSize="small" nz-button nzType="primary" title="export"  (click) = "export()"><i nz-icon nzType="cloud-download" nzTheme="outline"></i>{{'enb.export' | translate }}</button>
+  </nz-form-control>
+</nz-form-item>
+<ng-template #filterContentTemplate_1>
+    <div nz-row style="width: 800px;">
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'kpi.time' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <nz-range-picker [nzShowTime]="{ nzFormat: 'HH:mm' }" nzFormat="yyyy-MM-dd HH:mm:00" [(ngModel)]="dateRange"></nz-range-picker>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6"> {{'enb.id' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="cellKpiFilter.enbId">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6"> {{'enb.name' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="cellKpiFilter.enbName">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'kpi.cellId' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="cellKpiFilter.cellId">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'kpi.cellName' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="cellKpiFilter.cellName">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'enb.action' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <button nz-button nzType="primary" (click)="search()">{{'enb.search' | translate }}</button>
+                <nz-divider nzType="vertical"></nz-divider>
+                <button nz-button nzType="default" (click)="reset()">{{'enb.reset' | translate }}</button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</ng-template>
+
+<nz-table #tableKpis [nzData]="listOfCellKpi" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="totalItem"
+    [nzLoading]="dataLoading" [nzPageSizeOptions]="pageOptions" [nzFrontPagination]="false" nzShowQuickJumper nzShowSizeChanger
+    [nzShowTotal]="total_template_0" (nzPageIndexChange)="nzPageIndexChange($event)"
+    (nzPageSizeChange)="nzPageSizeChange($event)" [nzScroll]="tableScroll()">
+    <ng-template #total_template_0>
+      {{'enb.total' | translate }}: {{totalItem}}
+    </ng-template>
+    <thead>
+        <tr>
+            <th class="table_th"  nzWidth="150px"   nzAlign="center">
+                <button nzSize="small" nz-button nzType="primary" nz-popover [nzPopoverContent]="filterContentTemplate_1" nzPopoverTrigger="click" nzPopoverPlacement="bottomLeft" title="Filter KPIs"><i nz-icon nzType="filter"></i>{{'enb.filter' | translate }}</button>
+            </th>
+          <th class="table_th" nzAlign="center">{{'kpi.period' | translate }}</th>
+          <th class="table_th" nzAlign="center">{{'enb.id' | translate }}</th>
+          <th class="table_th" nzAlign="center">{{'kpi.cellId' | translate }}</th>
+          <th class="table_th" nzAlign="center">{{'enb.name' | translate }}</th>
+          <th class="table_th" nzAlign="center">{{'kpi.cellName' | translate }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of tableKpis.data">
+            <td class="table_td" nzAlign="center">
+                <a (click)="queryKpiTrends(data)"><i nz-icon nzType="line-chart" nzTheme="outline"></i></a>
+            </td>
+            <td class="table_td" nzAlign="center" [title]="data.periodStartTime">{{data.periodStartTime}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.neCode">{{data.neCode}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.cellId">{{data.cellId}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.neName">{{data.neName}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.cellName">{{data.cellName}}</td>
+        </tr>
+    </tbody>
+</nz-table>
+
+
+<nz-drawer [nzClosable]="true" [nzVisible]="isVisible" nzPlacement="bottom" nzTitle="指标趋势    (基站ID: {{neCode}}    小区ID: {{cellId}})" (nzOnClose)="closeKpiModal()" nzOffsetY="48" nzHeight="90%" >
+  <div nz-row style="width: 100%;">
+        <nz-form-item>
+            <nz-form-label>{{'kpi.startTime' | translate }}</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker nzSize="small" nzAllowClear="false" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="startTime"></nz-date-picker>
+            </nz-form-control>
+            <nz-divider nzType="vertical"></nz-divider>
+            <nz-form-label>{{'kpi.stopTime' | translate }}</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker nzSize="small" nzAllowClear="false" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="stopTime"></nz-date-picker>
+            </nz-form-control>
+
+            <nz-divider nzType="vertical"></nz-divider>
+            <nz-form-control>
+                <button nzSize="small" nz-button nzType="primary" (click)="trendSearch()">{{'enb.search' | translate }}</button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-row style="width: 100%;">
+        <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'" style="width: 100%;">
+            <nz-tab *ngFor="let tab of listOfChart; index as i;" [nzTitle]="tab.group.groupName">
+                <div nz-row style="margin-left: 100px;">
+                    <button nzSize="small" nz-button nzType="primary" (click)="echartLegendSelect(i, true)">{{'kpi.selectAll' | translate }}</button>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <button nzSize="small" nz-button nzType="default" (click)="echartLegendSelect(i, false)">{{'kpi.cancelAll' | translate }}</button>
+                </div>
+                <div nz-row echarts [options]="tab.echarts" style="height: 450px;margin-left: 100px;"></div>
+            </nz-tab>
+        </nz-tabset>
+    </div>
+
+</nz-drawer>

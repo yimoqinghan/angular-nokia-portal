@@ -1,0 +1,54 @@
+<nz-header>
+    <div class="app-header">
+        <!-- <a style="float: left;margin-left: 50px;" (click)="openNavigation()">
+            <img src="../../../assets/images/nav.png">
+        </a> -->
+        <div style="float: left;margin-left: 50px;">
+          <img style="height: 30px;" src="../../../assets/images/logo-nokia.png">
+        </div>
+
+        <div style="float: left;margin-left: 50px;color: #fff;font-size: 32px; fond-weight: 900;" id="ices_title">
+            {{pageTitle}}
+        </div>
+
+
+       <!-- <a style="float: right;margin-right:50px; margin-left: 20px;margin-top: -5px;">
+            <img style="height: 64px;" src="../../../assets/images/logo-ices.png">
+        </a>-->
+
+
+        <div style=" margin-right: 50px; float: right;margin-left: 20px;color: #fff;font-size: 24px;">
+            <a style="color:#fff;" (click)="logout()" title="Logout">
+                <i nz-icon nzType="logout" nzTheme="outline"></i>
+            </a>
+        </div>
+
+        <div style="float: right;margin-left: 20px;color: #fff;font-size: 24px;">
+          <a class="a-icon" style="color:#fff;"  [routerLink]="['/radio']" title="Home Page">
+            <i nz-icon nzType="home" nzTheme="fill"></i>
+          </a>
+        </div>
+
+        <div  *ngIf="currentUser.admin == 1" style="float: right;margin-left: 20px;color: #fff;font-size: 24px;">
+          <a class="a-icon"  style="color:#fff;"   [routerLink]="['/system']" title="System">
+            <i nz-icon nzType="setting" nzTheme="fill"></i>
+          </a>
+        </div>
+
+<!--        <div style="float: right;margin-left: 20px;color: #fff;font-size: 24px;">-->
+<!--          <a  class="a-icon"  style="color:#fff;"  [routerLink]="['/system-logger']" target="_blank"  title="Fault collection">-->
+<!--            <i nz-icon nzType="flag" nzTheme="fill"></i>-->
+<!--          </a>-->
+<!--        </div>-->
+
+
+        <div style="float: right;margin-left: 20px;color: #fff;font-size: 24px;">
+          <a class="a-icon"  style="color:#fff;"  [routerLink]="['/system/account']" style="text-decoration: underline;font-style:italic;">
+            <span style="font-weight: 800; font-size: 20px; color:#fff;">
+                {{ username }}
+            </span>
+            <i nz-icon nzType="user" nzTheme="outline"></i>
+          </a>
+        </div>
+    </div>
+</nz-header>

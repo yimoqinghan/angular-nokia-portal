@@ -1,0 +1,200 @@
+<ng-template #filterContentTemplate>
+    <div nz-row style="width: 600px;">
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">Time</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <nz-range-picker [nzShowTime]="{ nzFormat: 'HH:mm' }" nzFormat="yyyy-MM-dd HH:mm:00" [(ngModel)]="dateRange"></nz-range-picker>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">eNB ID</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="dataFilter.enbId">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">eNB Name</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="dataFilter.enbName">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">Executor</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="dataFilter.executor">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;" *ngIf="dataType == '0'">
+            <nz-form-label nzSpan="6">Execute Type</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <nz-select nzSize="small" nzAllowClear [(ngModel)]="dataFilter.executeType" style="width: 300px;">
+                    <nz-option nzLabel="automatic" nzValue="automatic"></nz-option>
+                    <nz-option nzLabel="manual" nzValue="manual"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">Execute Status</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <nz-select nzSize="small" nzAllowClear [(ngModel)]="dataFilter.status" style="width: 300px;">
+                    <nz-option nzLabel="pending" nzValue="pending"></nz-option>
+                    <nz-option nzLabel="in progress" nzValue="in progress"></nz-option>
+                    <nz-option nzLabel="successful" nzValue="successful"></nz-option>
+                    <nz-option nzLabel="unsuccessful" nzValue="unsuccessful"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">Action</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <button nz-button nzType="primary">Search</button>
+                <nz-divider nzType="vertical"></nz-divider>
+                <button nz-button nzType="default">Reset</button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</ng-template>
+
+<nz-form-item>
+    <nz-form-control nzSpan="24">
+        <button nzSize="small" nz-button nzType="primary" nz-popover nzPopoverTrigger="click" [nzPopoverContent]="filterContentTemplate" nzPopoverPlacement="bottomLeft"><i nz-icon nzType="filter" nzTheme="outline"></i>Filter</button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nzSize="small" nz-button nzType="primary"><i nz-icon nzType="cloud-download" nzTheme="outline"></i>Export</button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nzSize="small" nz-button nzType="primary" (click)="openManualModal()" *ngIf="dataType == '0'"><i nz-icon nzType="file-sync" nzTheme="outline"></i>Manual backup</button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nzSize="small" nz-button nzType="primary" (click)="batchRecovery()" *ngIf="dataType == '0'"><i nz-icon nzType="reload" nzTheme="outline"></i>Batch recovery</button>
+
+        <nz-radio-group [(ngModel)]="dataType" (ngModelChange)="nzDataTypeChange($event)" style="float: right;">
+            <label nz-radio nzValue="0">eNB backups</label>
+            <label nz-radio nzValue="1">eNB recovery</label>
+        </nz-radio-group>
+    </nz-form-control>
+</nz-form-item>
+
+<!-- Backups Table -->
+<nz-table *ngIf="dataType == '0'" #tableBackups [nzData]="listOfBackups" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="totalItem"
+    [nzLoading]="dataLoading" [nzPageSizeOptions]="pageOptions" nzShowQuickJumper nzShowSizeChanger
+    [nzShowTotal]="total_template_0" (nzPageIndexChange)="nzPageIndexChange($event)"
+    (nzPageSizeChange)="nzPageSizeChange($event)">
+    <ng-template #total_template_0>
+        Total: {{totalItem}}
+    </ng-template>
+    <thead>
+        <tr>
+            <th class="table_th"
+                [(nzChecked)]="checked"
+                [nzIndeterminate]="indeterminate"
+                (nzCheckedChange)="onAllChecked($event)"
+            ></th>
+            <th class="table_th" nzAlign="center">Backups Time</th>
+            <th class="table_th" nzAlign="center">eNB ID</th>
+            <th class="table_th" nzAlign="center">eNB Name</th>
+            <th class="table_th" nzAlign="center">Type</th>
+            <th class="table_th" nzAlign="center">Executor</th>
+            <th class="table_th" nzAlign="center">Status</th>
+            <th class="table_th" nzAlign="center">Result</th>
+            <th class="table_th" nzAlign="center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of tableBackups.data">
+            <td class="table_td" [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+            <td class="table_td" nzAlign="center" [title]="data.backupTime">{{data.backupTime}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.enbId">{{data.enbId}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.enbName">{{data.enbName}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.backupType">{{data.backupType}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.backupExecutor">{{data.backupExecutor}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.backupStatus">{{data.backupStatus}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.backupResult">{{data.backupResult}}</td>
+            <td class="table_td" nzAlign="center">
+                <a title="Download"><i nz-icon nzType="cloud-download" nzTheme="outline"></i></a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)="executeRecovery(data)" title="Recovery"><i nz-icon nzType="reload" nzTheme="outline"></i></a>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<!-- Recovery Table -->
+<nz-table *ngIf="dataType == '1'" #tableRecovery [nzData]="listOfRecovery" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="recoveryItem"
+    [nzLoading]="dataLoading" [nzPageSizeOptions]="pageOptions" nzShowQuickJumper nzShowSizeChanger
+    [nzShowTotal]="total_template_1" (nzPageIndexChange)="nzPageIndexChange($event)"
+    (nzPageSizeChange)="nzPageSizeChange($event)">
+    <ng-template #total_template_1>
+        Total: {{recoveryItem}}
+    </ng-template>
+    <thead>
+        <tr>
+            <th class="table_th" nzAlign="center">Recovery Time</th>
+            <th class="table_th" nzAlign="center">eNB ID</th>
+            <th class="table_th" nzAlign="center">eNB Name</th>
+            <th class="table_th" nzAlign="center">Backups</th>
+            <th class="table_th" nzAlign="center">Executor</th>
+            <th class="table_th" nzAlign="center">Status</th>
+            <th class="table_th" nzAlign="center">Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of tableRecovery.data">
+            <td class="table_td" nzAlign="center" [title]="data.recoverTime">{{data.recoverTime}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.enbId">{{data.enbId}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.enbName">{{data.enbName}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.backupTime">{{data.backupTime}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.recoverExecutor">{{data.recoverExecutor}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.recoverStatus">{{data.recoverStatus}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.recoverResult">{{data.recoverResult}}</td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<nz-modal nzWidth="90%" [(nzVisible)]="isVisible" nzTitle="Manual backup" (nzOnCancel)="closeManualModal()" (nzOnOk)="executeBackups()" nzOkText="Backup">
+    <nz-transfer
+        [nzDataSource]="transferItems"
+        nzShowSearch="true"
+        [nzShowSelectAll]="false"
+        [nzRenderList]="[renderList, renderList]"
+        [nzTitles]="['Unselected eNB', 'Selected eNB']"
+        (nzSearchChange)="searchSite($event)"
+        (nzSelectChange)="select($event)"
+        (nzChange)="change($event)">
+        <ng-template
+            #renderList
+            let-stat="stat"
+            let-items
+            let-direction="direction"
+            let-onItemSelectAll="onItemSelectAll"
+            let-onItemSelect="onItemSelect"
+            >
+            <nz-table #t [nzData]="items" nzSize="small">
+                <thead>
+                    <tr>
+                        <th
+                            [nzChecked]="stat.checkAll"
+                            [nzIndeterminate]="stat.checkHalf"
+                            (nzCheckedChange)="onItemSelectAll($event)"
+                        ></th>
+                        <th>eNB ID</th>
+                        <th>eNB Name</th>
+                        <th>NE_SW</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of t.data;" (click)="onItemSelect(data)">
+                        <td class="table_td_1" [nzChecked]="data.checked" (nzCheckedChange)="onItemSelect(data)"></td>
+                        <td class="table_td_1">{{ data.site.enbId }}</td>
+                        <td class="table_td_1">{{ data.site.enbName }}</td>
+                        <td class="table_td_1">{{ data.site.version }}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </ng-template>
+    </nz-transfer>
+
+</nz-modal>

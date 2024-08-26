@@ -1,0 +1,22 @@
+:host ::ng-deep .ant-menu{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+::ng-deep .ant-drawer-body{
+    padding: 0px 24px;
+}
+
+.menu-group {
+    font-size: 20px;
+    font-weight: 500;
+    color: black;
+    margin-top: 10px; 
+    margin-bottom: 0px;
+}
+
+.menu {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}

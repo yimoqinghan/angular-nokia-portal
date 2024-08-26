@@ -1,0 +1,138 @@
+<div nz-row class="app-title">
+  Abnormal KPIs
+</div>
+
+<nz-form-item>
+  <nz-form-control nzSpan="24">
+    <!--<button nzSize="small" nz-button nzType="primary" nz-popover [nzPopoverContent]="filterContentTemplate"  nzPopoverTrigger="click"  nzPopoverPlacement="right"><i nz-icon nzType="filter" nzTheme="outline"></i>Filter</button>
+    <nz-divider nzType="vertical"></nz-divider>-->
+    <button nzSize="small" nz-button nzType="primary" title="export"  (click) = "export()"><i nz-icon nzType="cloud-download" nzTheme="outline"></i>Export</button>
+  </nz-form-control>
+</nz-form-item>
+<ng-template #filterContentTemplate_2>
+    <div nz-row style="width: 600px;">
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">Time</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <nz-range-picker [nzShowTime]="{ nzFormat: 'HH:mm' }" nzFormat="yyyy-MM-dd HH:mm:00" [(ngModel)]="dateRange"></nz-range-picker>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">eNB ID</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="cellKpiFilter.enbId">
+            </nz-form-control>
+        </nz-form-item>
+
+       <!-- <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">eNB Name</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="cellKpiFilter.enbName">
+            </nz-form-control>
+        </nz-form-item>-->
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">Cell ID</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="cellKpiFilter.cellId">
+            </nz-form-control>
+        </nz-form-item>
+
+        <!--<nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">Cell Name</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="cellKpiFilter.cellName">
+            </nz-form-control>
+        </nz-form-item>-->
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">Action</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <button nz-button nzType="primary" (click)="search()">Search</button>
+                <nz-divider nzType="vertical"></nz-divider>
+                <button nz-button nzType="default" (click)="reset()">Reset</button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</ng-template>
+
+<nz-table #tableKpis [nzData]="listOfCellKpi" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="totalItem"
+    [nzLoading]="dataLoading" [nzPageSizeOptions]="pageOptions" [nzFrontPagination]="false" nzShowQuickJumper nzShowSizeChanger
+    [nzShowTotal]="total_template_0" (nzPageIndexChange)="nzPageIndexChange($event)"
+    (nzPageSizeChange)="nzPageSizeChange($event)" [nzScroll]="tableScroll()">
+    <ng-template #total_template_0>
+        Total: {{totalItem}}
+    </ng-template>
+    <thead>
+        <tr>
+            <th nzWidth="5%" class="table_th" nzAlign="center">
+                <button nzSize="small" nz-button nzType="primary" nz-popover [nzPopoverContent]="filterContentTemplate_2" nzPopoverTrigger="click" nzPopoverPlacement="bottomLeft" title="filter KPIs"><i nz-icon nzType="filter"></i>Filter</button>
+            </th>
+            <th nzWidth="150px" class="table_th" nzAlign="center">PERIOD</th>
+            <th nzWidth="5%" class="table_th" nzAlign="center">ENB_ID</th>
+            <th nzWidth="5%" class="table_th" nzAlign="center">CELL_ID</th>
+
+<!--            <th  *ngFor="let data of listOfKpi" nzWidth="80px" class="table_th" nzAlign="center">{{data.kpiName}}</th>-->
+            <th nzWidth="80px" class="table_th" nzAlign="center">Paging congestion <br/>ratio</th>
+            <th nzWidth="80px" class="table_th" nzAlign="center">RRC connection setup<br/> success ratio</th>
+            <th nzWidth="80px" class="table_th" nzAlign="center">E-RAB setup<br/> success ratio</th>
+            <th nzWidth="80px" class="table_th" nzAlign="center">Radio<br/> success ratio</th>
+            <th nzWidth="80px" class="table_th" nzAlign="center">E-RAB<br/> congestion ratio</th>
+            <th nzWidth="80px" class="table_th" nzAlign="center">E-RAB<br/> drop ratio</th>
+            <th nzWidth="80px" class="table_th" nzAlign="center">HO <br/>success ratio</th>
+            <th nzWidth="80px" class="table_th" nzAlign="center">Paging channel <br/>  utilizationrate</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of tableKpis.data">
+            <td class="table_td" nzAlign="center">
+                <a (click)="openKpiModal(data)"><i nz-icon nzType="line-chart" nzTheme="outline"></i></a>
+            </td>
+            <td class="table_td" nzAlign="center" [title]="data.period">{{data.periodStartTime}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.enbId">{{data.neCode}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.cellId">{{data.cellId}}</td>
+            <!-- <td class="table_td" nzAlign="center" [title]="data.enbName">{{data.enbName}}</td> -->
+            <td class="table_td" nzAlign="center"   *ngFor="let kpi of listOfKpi" >
+                <span *ngIf="data.abnormal.indexOf(kpi.id) != -1" style="color: red;">{{ getKpi(data.dataMap, kpi.id) }}</span>
+                <span *ngIf="data.abnormal.indexOf(kpi.id) == -1">{{ getKpi(data.dataMap, kpi.id) }}</span>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+
+<nz-drawer [nzClosable]="true" [nzVisible]="isVisible" nzPlacement="bottom" nzTitle="KPIs Trend    (END ID: {{neCode}}    CELL ID: {{cellId}})" (nzOnClose)="closeKpiModal()" nzOffsetY="48" nzHeight="80%" >
+    <div nz-row style="width: 100%;">
+        <nz-form-item>
+            <nz-divider nzType="vertical"></nz-divider>
+            <nz-form-label>Start Time</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker nzSize="small" nzAllowClear="false" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="startTime"></nz-date-picker>
+            </nz-form-control>
+            <nz-divider nzType="vertical"></nz-divider>
+            <nz-form-label>Stop Time</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker nzSize="small" nzAllowClear="false" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="stopTime"></nz-date-picker>
+            </nz-form-control>
+
+            <nz-divider nzType="vertical"></nz-divider>
+            <nz-form-label>KPIs</nz-form-label>
+            <nz-form-control >
+                <nz-select nzSize="small" nzShowSearch [(ngModel)]="kpiId" style="width: 300px;" (ngModelChange)="onKpiChange()">
+                    <nz-option nzCustomContent  *ngFor="let option of listOfKpi;" [nzLabel]="option.kpiName" [nzValue]="option.id">
+                        <span *ngIf="abnormalKpi.abnormal.indexOf(option.id) != -1" style="color: red;"><i nz-icon nzType="alert" nzTheme="outline"></i> {{option.kpiName}}</span>
+                        <span *ngIf="abnormalKpi.abnormal.indexOf(option.id) == -1">{{option.kpiName}}</span>
+                    </nz-option>
+                </nz-select>
+            </nz-form-control>
+            <nz-divider nzType="vertical"></nz-divider>
+            <nz-form-control>
+                <button nzSize="small" nz-button nzType="primary" (click)="trendSearch()">Search</button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-row style="width: 100%;margin-top: 24px;">
+        <div nz-row echarts [options]="echartOfKpi" style="height: 450px; width: 100%;"></div>
+    </div>
+</nz-drawer>

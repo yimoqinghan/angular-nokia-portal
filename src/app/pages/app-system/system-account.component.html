@@ -1,0 +1,74 @@
+<nz-layout class="app-layout">
+    <app-nokia-header #pageHeader [pageHref]="pageHref"></app-nokia-header>
+    <div nz-row class="app-content" [ngStyle]="contentStyle()">
+
+        <div style="width: 600px;">
+            <nz-form-item style="margin-top: 64px;width: 100%;">
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzTooltipTitle="used for user login">
+                    <span>{{'user.account' | translate }}</span>
+                </nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+                    <span style="font-size: 20px;font-style: italic;font-weight: 500;">{{account}}</span>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- user profile -->
+            <form nz-form [formGroup]="validateProfile" (ngSubmit)="submitProfileForm()" style="width: 100%;max-height: 200px;margin-top: 24px;">
+                <nz-form-item>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>{{'user.nickName' | translate }}</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your nickname!">
+                        <input nz-input id="name" formControlName="name" />
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email">{{'user.email' | translate }}</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="'user.checkEmail' | translate ">
+                        <input nz-input formControlName="email" id="email" />
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item nz-row class="register-area">
+                    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+                        <button nz-button nzType="primary">{{'user.updateProfile' | translate }}</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+
+            <!-- user password -->
+            <form nz-form [formGroup]="validatePassword" (ngSubmit)="submitPasswdForm()" style="width: 100%;">
+                <nz-form-item>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>{{'user.password' | translate }}</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="passwordError">
+                        <input type="password" nz-input id="password" formControlName="password"
+                            (ngModelChange)="updateConfirmValidator()" />
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>{{'user.confirmPassword' | translate }}</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="errorTpl">
+                        <input type="password" nz-input formControlName="checkPassword" id="checkPassword" />
+                        <ng-template #errorTpl let-control>
+                            <ng-container *ngIf="control.hasError('required')">{{'user.inputPassword' | translate }}</ng-container>
+                            <ng-container *ngIf="control.hasError('confirm')">
+                              {{'user.inconsistent' | translate }}
+                            </ng-container>
+                        </ng-template>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item nz-row class="register-area">
+                    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+                        <button nz-button nzType="primary">{{'user.updatePassword' | translate }}</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+        </div>
+
+
+
+
+
+    </div>
+    <app-nokia-footer #pageFooter></app-nokia-footer>
+</nz-layout>

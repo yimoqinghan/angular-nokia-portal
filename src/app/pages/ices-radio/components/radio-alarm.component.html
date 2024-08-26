@@ -1,0 +1,103 @@
+<div nz-row class="app-title">
+  {{'alarm.alarm' | translate }}
+</div>
+<ng-template #filterContentTemplate>
+    <div nz-row style="width: 600px;">
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'kpi.time' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <nz-range-picker [nzShowTime]="{ nzFormat: 'HH:mm' }" nzFormat="yyyy-MM-dd HH:mm:00" [(ngModel)]="dateRange"></nz-range-picker>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'enb.id' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="alarmFilter.enbId">
+            </nz-form-control>
+        </nz-form-item>
+
+      <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6">{{'enb.code' | translate }}</nz-form-label>
+        <nz-form-control nzSpan="16">
+          <input nz-input [(ngModel)]="alarmFilter.siteCode">
+        </nz-form-control>
+      </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'alarm.alarmNo' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="alarmFilter.alarmNo">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'alarm.faultId' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="alarmFilter.faultId">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'enb.action' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <button nz-button nzType="primary" (click)="search()">{{'enb.search' | translate }}</button>
+                <nz-divider nzType="vertical"></nz-divider>
+                <button nz-button nzType="default" (click)="clearFilter()">{{'enb.reset' | translate }}</button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</ng-template>
+
+<nz-form-item>
+    <nz-form-control nzSpan="6">
+        <button nzSize="small" nz-button nzType="primary" nz-popover [nzPopoverContent]="filterContentTemplate" nzPopoverTrigger="click" nzPopoverPlacement="bottomLeft" title="filter"><i nz-icon nzType="filter" nzTheme="outline"></i>{{'enb.filter' | translate }}</button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nzSize="small" nz-button nzType="primary" title="export" (click) = "exportAlarm()"><i nz-icon nzType="cloud-download" nzTheme="outline"></i>{{'enb.export' | translate }}</button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <nz-radio-group [(ngModel)]="alarmType" (ngModelChange)="nzAlarmTypeChange($event)">
+            <label nz-radio nzValue="1">{{'alarm.active' | translate }}</label>
+            <label nz-radio nzValue="0">{{'alarm.history' | translate }}</label>
+        </nz-radio-group>
+    </nz-form-control>
+</nz-form-item>
+
+<nz-table #tableAlarms [nzData]="listOfAlarm" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="totalItem"
+    [nzLoading]="dataLoading" [nzPageSizeOptions]="pageOptions" [nzFrontPagination]="false" nzShowQuickJumper nzShowSizeChanger
+    [nzShowTotal]="total_template_0" (nzPageIndexChange)="nzPageIndexChange($event)"
+    (nzPageSizeChange)="nzPageSizeChange($event)"  [nzScroll]="tableScroll()">
+    <thead>
+        <ng-template #total_template_0>
+          {{'enb.total' | translate }}: {{totalItem}}
+        </ng-template>
+        <tr>
+            <th class="table_th" nzLeft nzWidth="125px"  nzAlign="center">{{'enb.id' | translate }}</th>
+          <th class="table_th"  nzWidth="245px" nzAlign="center">{{'enb.code' | translate }}</th>
+          <th class="table_th"  nzWidth="15%" nzAlign="center">{{'alarm.alarmTime' | translate }}</th>
+          <th class="table_th"  nzWidth="10%" nzAlign="center">{{'alarm.alarmSeverity' | translate }}</th>
+          <th class="table_th" nzLeft nzWidth="125px" nzAlign="center">{{'alarm.alarmNo' | translate }}</th>
+          <th class="table_th"  nzWidth="125px" nzAlign="center">{{'alarm.faultId' | translate }}</th>
+          <th class="table_th"  nzWidth="25%" nzAlign="center">{{'alarm.alarmResource' | translate }}</th>
+          <th class="table_th"  nzWidth="25%" nzAlign="center">{{'alarm.alarmDetail' | translate }}</th>
+            <th class="table_th"  nzWidth="10%" nzAlign="center" *ngIf="alarmType == '0'">{{'alarm.cancelTime' | translate }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of tableAlarms.data">
+            <td class="table_td" nzLeft  nzAlign="center" [title]="data.enbId">{{data.neCode}}</td>
+          <td class="table_td" nzAlign="center" [title]="data.siteCode">{{data.siteCode}}</td>
+          <td class="table_td" nzAlign="center" [title]="data.alarmTime">{{data.alarmTime}}</td>
+          <td class="table_td" nzAlign="center" [title]="data.alarmSeverity">
+            <span *ngIf="data.alarmSeverity == 'Critical'" style="color: red;">{{data.alarmSeverity}}</span>
+            <span *ngIf="data.alarmSeverity == 'Major'" style="color: #D2691E;">{{data.alarmSeverity}}</span>
+            <span *ngIf="data.alarmSeverity == 'Minor'" style="color: #FFD700;">{{data.alarmSeverity}}</span>
+          </td>
+          <td class="table_td" nzLeft nzAlign="center" [title]="data.alarmNo">{{data.alarmNo}}</td>
+          <td class="table_td" nzAlign="center" [title]="data.faultId">{{data.faultyId}}</td>
+          <td class="table_td" nzAlign="center" [title]="data.alarmResource">{{data.alarmSource}}</td>
+          <td class="table_td" nzAlign="center" [title]="data.alarmDetail">{{data.alarmDescription}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.cancelTime" *ngIf="alarmType == '0'">{{data.cancelTime}}
+            </td>
+        </tr>
+    </tbody>
+</nz-table>

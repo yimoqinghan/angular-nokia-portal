@@ -1,0 +1,17 @@
+::ng-deep .ant-layout-header{
+    height: 64px;
+    background: url('../../../assets/images/header.png');
+}
+
+/* .app-header {
+    position  : relative;
+    height    : 64px;
+    padding   : 0;
+    box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+} */
+
+nz-header {
+    padding: 0;
+    width  : 100%;
+    z-index: 2;
+}

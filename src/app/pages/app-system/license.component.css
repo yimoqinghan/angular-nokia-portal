@@ -1,0 +1,6 @@
+.ant-table,.ng-star-inserted {width: 100%}
+.table_th {
+  padding: 8px 5px;
+  background: rgb(220, 220, 220) !important;
+  font-weight: bold;
+}

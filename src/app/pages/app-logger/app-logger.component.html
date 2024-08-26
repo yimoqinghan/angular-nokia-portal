@@ -1,0 +1,38 @@
+<nz-layout>
+    <app-nokia-header #headerService ></app-nokia-header>
+    <div style="height: 64px;">
+      <nz-form-item style="margin-bottom: 10px;margin-top: 10px;">
+        <nz-form-label [nzSpan]="2" class="form-label">Program</nz-form-label>
+        <nz-form-control [nzSpan]="3">
+          <nz-select [(ngModel)]="selectProgram" (ngModelChange)="progaramChange()" nzPlaceHolder="Choose program" style="width: 100%;">
+            <nz-option *ngFor="let option of listOfProgram" [nzLabel]="option.name" [nzValue]="option.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+
+        <nz-form-label [nzSpan]="2" class="form-label">Log file</nz-form-label>
+        <nz-form-control [nzSpan]="13">
+          <nz-cascader style="width: 100%;" [nzOptions]="listOfLogFile" [(ngModel)]="values" (ngModelChange)="onChanges($event)"></nz-cascader>
+        </nz-form-control>
+        <nz-form-control [nzSpan]="4">
+          <nz-divider nzType="vertical"></nz-divider>
+          <button nz-button nzType="primary" (click)="exportLog()" [nzLoading]="exporting || loadingFile"><i nz-icon nzType="download"></i></button>
+
+          <nz-divider nzType="vertical"></nz-divider>
+          <button nz-button nzType="primary" (click)="searchLog()" [nzLoading]="loglistLoading || loadingFile"><i nz-icon nzType="search"></i></button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <nz-content>
+      <div class="inner-content-f" [ngStyle]="contentStyle()">
+        <div nz-row>
+          <nz-list [nzDataSource]="listOfLog" nzSize="small" [nzRenderItem]="smalLoglItem">
+            <ng-template #smalLoglItem let-item>
+              <nz-list-item [nzContent]="item" style="color: #089939; font-weight: bold;"></nz-list-item>
+            </ng-template>
+          </nz-list>
+        </div>
+      </div>
+    </nz-content>
+    <app-nokia-footer></app-nokia-footer>
+</nz-layout>

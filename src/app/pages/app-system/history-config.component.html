@@ -1,0 +1,155 @@
+<div nz-row [ngStyle]="contentHeight()" style="width: 100%;">
+  <div [ngStyle]="tableHeight()">
+    <ng-template #user_title>
+      <nz-form-item>
+        <nz-form-control [nzSpan]="24">
+          <input nz-input [(ngModel)]="tableName" [placeholder]="'history.tableName' | translate "  style="width: 240px;"/>
+          <nz-divider nzType="vertical"></nz-divider>
+          <button nz-button nzType="primary" title="Search" (click)="searchConfigs()"><i nz-icon nzType="search"></i>{{'enb.search' | translate }}
+          </button>
+<!--          <nz-divider nzType="vertical"></nz-divider>-->
+<!--          <button *ngIf="currentUser.admin == 1" nz-button nzType="primary" (click)="createConfig()"><i nz-icon-->
+<!--                                                                                                        nzType="plus"></i>Create-->
+<!--          </button>-->
+        </nz-form-control>
+      </nz-form-item>
+    </ng-template>
+    <ng-template #total_item>{{'enb.total' | translate }}: {{totalItem}}</ng-template>
+    <nz-table nzShowQuickJumper nzShowSizeChanger #userTable [nzTitle]="user_title" [nzData]="configList" nzSize="small"
+              [nzLoading]="dataLoading" [nzShowTotal]="total_item" [nzTotal]="totalItem" nzPaginationType="small"
+              [nzPageSize]="20" [nzPageSizeOptions]="pageSizeOptions" [nzScroll]="tableScroll()">
+      <thead>
+      <tr>
+        <th nzWidth="15%"  class="table_th" nzAlign="center">{{'history.name' | translate }}</th>
+        <th nzWidth="15%"  class="table_th" nzAlign="center">{{'history.saveTime' | translate }}</th>
+        <th nzWidth="20%"  class="table_th" nzAlign="center">{{'history.unit' | translate }}</th>
+        <th nzWidth="10%"  class="table_th" nzAlign="center" *ngIf="currentUser.admin == 1">{{'enb.action' | translate }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of userTable.data">
+        <td nzAlign="center" class="table_td">{{ data.dataName }}</td>
+        <td nzAlign="center" class="table_td">{{ data.retention }}</td>
+        <td nzAlign="center" class="table_td">{{ data.partitionType == 'D'? '天':'月' }}</td>
+        <td nzAlign="center" class="table_td" *ngIf="currentUser.admin == 1">
+          <a (click)="updateConfig(data)" title="Update Config">
+            <i nz-icon nzType="edit" nzTheme="outline"></i>
+          </a>
+          <!--<nz-divider nzType="vertical"></nz-divider>
+          <a (click)="deleteConfig(data)" title="Delete Config">
+            <i nz-icon nzType="delete" nzTheme="outline"></i>
+          </a>-->
+        </td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+
+<!-- 用户编辑窗口 -->
+<nz-modal [(nzVisible)]="visibleConfig" [nzTitle]="titleConfig" (nzOnCancel)="closeConfig()" (nzOnOk)="saveConfig()"
+          [nzOkText]="'user.save' | translate "   [nzCancelText]="'user.close' | translate ">
+  <ng-container>
+
+    <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="10">{{'history.name' | translate }}</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="config.dataName" readonly>
+<!--        <nz-select nzAllowClear [(ngModel)]="config.dataName">-->
+<!--          <nz-option nzLabel="ALARM" nzValue="ALARM"></nz-option>-->
+<!--          <nz-option nzLabel="KPI" nzValue="KPI"></nz-option>-->
+<!--          <nz-option nzLabel="BTS STATE" nzValue="STATE"></nz-option>-->
+<!--        </nz-select>-->
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="10">{{'history.saveTime' | translate }}</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <nz-input-number  [(ngModel)]="config.retention" [nzMin]="1" [nzMax]="900" [nzStep]="1" style="width: 100%;"></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="10">{{'history.unit' | translate }}</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <nz-select nzAllowClear [(ngModel)]="config.partitionType">
+          <nz-option nzLabel="天" nzValue="D"></nz-option>
+          <nz-option nzLabel="月" nzValue="M"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+<!--    <nz-form-item *ngIf="newConfig == true">-->
+   <!-- <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="8">Datasource Name</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="config.datasourceName">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="8">Datasource IP</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="config.datasourceIp">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="8">Datasource Port</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="config.datasourcePort">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="8">Datasource User</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="config.datasourceUser">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="8">Datasource password</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="config.datasourcePassword">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="8">Datasource Type</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="config.datasourceType" placeholder="MYSQL/GP">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="8">Table Name</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="config.tableName">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="8">Unit</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="config.partitionType" placeholder="D/M">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="8">Saving Time</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="config.retention">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label nzRequired [nzSpan]="8">Field</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="config.judgeField">
+      </nz-form-control>
+    </nz-form-item>-->
+  </ng-container>
+</nz-modal>
+

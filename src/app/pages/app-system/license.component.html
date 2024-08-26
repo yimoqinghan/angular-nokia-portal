@@ -1,0 +1,78 @@
+<!--<div nz-row>
+  <div>
+    <ng-template #licenseTable_title>
+      <nz-form-item>
+        <nz-form-control>
+          <button (click)="importFile()" style="margin-bottom: 10px;" nz-button
+                  nzType="primary"><i nz-icon nzType="cloud-upload"></i>Upload License File
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </ng-template>
+
+    <nz-table #licenseTable [nzData]="listOfLicense" [nzTitle]="licenseTable_title">
+      <thead>
+      <tr>
+        <th class="table_th" nzAlign="center">Customer</th>
+        <th class="table_th" nzAlign="center">Product</th>
+        <th class="table_th" nzAlign="center">Module</th>
+        <th class="table_th" nzAlign="center">Start Time</th>
+        <th class="table_th" nzAlign="center">Expire Time</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of licenseTable.data">
+        <td class="table_td" nzAlign="center">{{data.customer}}</td>
+        <td class="table_td" nzAlign="center">{{data.product}}</td>
+        <td class="table_td" nzAlign="center">{{data.module}}</td>
+        <td class="table_td" nzAlign="center">{{data.startupTime}}</td>
+        <td class="table_td" nzAlign="center">{{data.expireTime}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>-->
+
+
+<div nz-row [ngStyle]="contentHeight()" style="width: 100%;">
+  <div [ngStyle]="tableHeight()">
+    <ng-template #user_title>
+      <nz-form-item>
+        <nz-form-control [nzSpan]="24">
+          <button nz-button nzType="primary" title="Search" (click)="importFile()"><i nz-icon nzType="cloud-upload"></i>{{'license.uploadFile' | translate }}
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </ng-template>
+    <nz-table nzShowQuickJumper nzShowSizeChanger #licenseTable [nzTitle]="user_title" [nzData]="listOfLicense" nzSize="small"
+              nzPaginationType="small"
+              [nzScroll]="tableScroll()">
+      <thead>
+      <tr>
+        <th class="table_th"  class="table_th" nzAlign="center">{{'license.customer' | translate }}</th>
+        <th class="table_th"  class="table_th" nzAlign="center">{{'license.product' | translate }}</th>
+        <th class="table_th"  class="table_th" nzAlign="center">{{'license.module' | translate }}</th>
+        <th class="table_th"  class="table_th" nzAlign="center">{{'license.startTime' | translate }}</th>
+        <th class="table_th"  class="table_th" nzAlign="center">{{'license.expireTime' | translate }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of licenseTable.data">
+        <td class="table_td" nzAlign="center">{{data.customer}}</td>
+        <td class="table_td" nzAlign="center">{{data.product}}</td>
+        <td class="table_td" nzAlign="center">{{data.module}}</td>
+        <td class="table_td" nzAlign="center">{{data.startupTime}}</td>
+        <td class="table_td" nzAlign="center">{{data.expireTime}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="fileUplaodVisible" [nzTitle]="'license.uploadFile' | translate " (nzOnCancel)="handleCancel()"
+          [nzFooter]="fileUploadFooterTemplate">
+  <ng-template #fileUploadFooterTemplate></ng-template>
+  <nz-upload [nzCustomRequest]="customReq">
+    <button nz-button><i nz-icon nzType="upload"></i><span>{{'license.upload' | translate }}</span></button>
+  </nz-upload>
+</nz-modal>

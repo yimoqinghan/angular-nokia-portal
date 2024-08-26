@@ -1,0 +1,189 @@
+<!-- <div nz-row class="app-title">User Group</div> -->
+<div nz-row [ngStyle]="contentHeight()" style="width: 100%;">
+    <div [ngStyle]="tableHeight()">
+        <ng-template #group_title>
+            <nz-form-item>
+                <nz-form-control [nzSpan]="24">
+                    <input nz-input [(ngModel)]="groupName" [placeholder]="'group.groupName' | translate " style="width: 240px;" />
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <button nz-button nzType="primary" title="Search" (click)="searchGroups()"><i nz-icon nzType="search"></i>{{'enb.search' | translate }}</button>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <button nz-button nzType="primary" (click)="createGroup()"><i nz-icon nzType="plus"></i>{{'user.create' | translate }}</button>
+                </nz-form-control>
+            </nz-form-item>
+        </ng-template>
+        <ng-template #total_item>{{'enb.total' | translate }}: {{totalItem}}</ng-template>
+        <nz-table nzShowQuickJumper nzShowSizeChanger #groupTable [nzTitle]="group_title" [nzData]="listOfGroup" nzSize="small"
+            [nzLoading]="dataLoading" [nzShowTotal]="total_item" [nzTotal]="totalItem" nzPaginationType="small"
+            [nzPageSize]="20" [nzPageSizeOptions]="pageSizeOptions" [nzScroll]="tableScroll()">
+            <thead>
+                <tr>
+                    <th nzWidth="20%"  class="table_th" nzAlign="center">{{'group.name' | translate }}</th>
+                    <th nzWidth="30%"  class="table_th" nzAlign="center">{{'group.notes' | translate }}</th>
+                    <th nzWidth="10%"  class="table_th" nzAlign="center">{{'group.users' | translate }}</th>
+                    <th nzWidth="10%"  class="table_th" nzAlign="center">{{'group.btsBind' | translate }}</th>
+                    <th nzWidth="10%"  class="table_th" nzAlign="center">{{'enb.action' | translate }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of groupTable.data">
+                    <td nzAlign="center" class="table_td">{{ data.name }}</td>
+                    <td nzAlign="center" class="table_td">{{ data.notes }}</td>
+                    <td nzAlign="center" class="table_td">
+                        <a (click)="openUser(data)">{{ data.users }}</a>
+                    </td>
+
+                    <td nzAlign="center" class="table_td">
+                      <div *ngIf="data.id !== 1">
+                        <a (click)="openBtsBindingSetting(data)">{{data.btsSize }}</a>
+                      </div>
+                    </td>
+
+                    <td nzAlign="center" class="table_td">
+                      <div *ngIf="data.id !== 1">
+                        <a (click)="updateGroup(data)" title="Update User Group">
+                            <i nz-icon nzType="edit"></i>
+                        </a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a (click)="showDeleteGroupModal(data)" title="Delete User Group" >
+                            <i nz-icon nzType="delete"></i>
+                        </a>
+                      </div>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+
+</div>
+
+<nz-modal [(nzVisible)]="isDeleteGroup" [nzTitle]="'tip.delete' | translate "  (nzOnCancel)="cancel()" (nzOnOk)="deleteGroup()">
+  <p>{{'group.removeGroup' | translate }}</p>
+</nz-modal>
+
+
+<!-- 用户组编辑窗口 -->
+<nz-modal [(nzVisible)]="visibleGroup" [nzTitle]="titleGroup" (nzOnCancel)="closeGroup()" (nzOnOk)="saveGroup()" [nzOkText]="'user.save' | translate "   [nzCancelText]="'user.close' | translate ">
+    <ng-container>
+        <nz-form-item>
+                <nz-form-label nzRequired [nzSpan]="5">{{'group.name' | translate }}</nz-form-label>
+                <nz-form-control [nzSpan]="17">
+                    <input nz-input [(ngModel)]="usergroup.name">
+                </nz-form-control>
+            </nz-form-item>
+        <nz-form-item>
+            <nz-form-label [nzSpan]="5">{{'group.notes' | translate }}</nz-form-label>
+            <nz-form-control [nzSpan]="17">
+                <textarea nz-input [(ngModel)]="usergroup.notes" [nzAutosize]="{ minRows: 3, maxRows: 5 }"></textarea>
+            </nz-form-control>
+        </nz-form-item>
+    </ng-container>
+</nz-modal>
+
+<!-- 用户组设置用户窗口 -->
+<nz-modal [(nzVisible)]="visibleSelection" [nzTitle]="titleSelection" (nzOnCancel)="closeUser()" (nzOnOk)="saveUserGroupItem()" [nzOkText]="'user.save' | translate "   [nzCancelText]="'user.close' | translate " nzWidth="1000px">
+    <ng-container>
+        <ng-template #empty_table></ng-template>
+        <nz-transfer nzShowSearch [nzDataSource]="listOfItem" [nzShowSelectAll]="false" [nzTitles]="['[来源]', '[已选择]']"
+            [nzRenderList]="[renderListSelection, renderListSelection]" (nzChange)="changeItems($event)">
+            <ng-template #renderListSelection let-items let-direction="direction" let-stat="stat" let-disabled="disabled"
+                let-onItemSelectAll="onItemSelectAll" let-onItemSelect="onItemSelect">
+                <nz-table #tableSelection [nzData]="items" nzSize="small" [nzPageSize]="50" [nzNoResult]="empty_table" [nzScroll]="{'y': '450px'}">
+                    <thead>
+                        <tr>
+                            <th nzWidth="10%" nzAlign="center" [nzChecked]="stat.checkAll"
+                                [nzIndeterminate]="stat.checkHalf" (nzCheckedChange)="onItemSelectAll($event)">
+                            </th>
+                            <th nzWidth="20%" nzAlign="center">{{'user.account' | translate }}</th>
+                            <th nzWidth="30%" nzAlign="center">{{'user.nickName' | translate }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of tableSelection.data" (click)="onItemSelect(data)">
+                            <td nzAlign="center" class="table_td" [nzChecked]="data.checked"
+                                (nzCheckedChange)="onItemSelect(data)"></td>
+                            <td nzAlign="center" class="table_td">{{ data.account }}</td>
+                            <td nzAlign="center" class="table_td">{{ data.name }}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </ng-template>
+        </nz-transfer>
+    </ng-container>
+</nz-modal>
+
+
+<!-- 用户组基站绑定设置 -->
+<nz-modal [(nzVisible)]="visibleBtsBinding" [nzTitle]="titleBtsBinding" (nzOnCancel)="closeBtsBinding()" (nzOnOk)="saveBtsBinding()" [nzOkText]="'user.save' | translate "   [nzCancelText]="'user.close' | translate " nzWidth="800px">
+  <ng-container>
+    <ng-template #empty_table_bts></ng-template>
+    <nz-transfer nzShowSearch [nzDataSource]="listOfItem" [nzShowSelectAll]="false" [nzTitles]="['[来源]', '[已选择]']"
+                 [nzRenderList]="[renderBtsListSelection, renderBtsListSelection]" (nzChange)="changeItems($event)">
+      <ng-template #renderBtsListSelection let-items let-direction="direction" let-stat="stat" let-disabled="disabled"
+                   let-onItemSelectAll="onItemSelectAll" let-onItemSelect="onItemSelect">
+        <nz-table #tableBtsSelection [nzData]="items" nzSize="small" [nzPageSize]="50" [nzNoResult]="empty_table_bts" [nzScroll]="{'y': '450px'}">
+          <thead>
+          <tr>
+            <th nzWidth="10%" nzAlign="center" [nzChecked]="stat.checkAll"
+                [nzIndeterminate]="stat.checkHalf" (nzCheckedChange)="onItemSelectAll($event)">
+            </th>
+            <th nzWidth="20%" nzAlign="center">{{'enb.id' | translate }}</th>
+            <th nzWidth="30%" nzAlign="center">{{'enb.name' | translate }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of tableBtsSelection.data" (click)="onItemSelect(data)">
+            <td nzAlign="center" class="table_td" [nzChecked]="data.checked"
+                (nzCheckedChange)="onItemSelect(data)"></td>
+            <td nzAlign="center" class="table_td">{{ data.account }}</td>
+            <td nzAlign="center" class="table_td">{{ data.name }}</td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </ng-template>
+    </nz-transfer>
+  </ng-container>
+</nz-modal>
+
+<!-- 用户绑定的用户组查看窗口 -->
+<!--<nz-modal [(nzVisible)]="visibleUser" [nzTitle]="titleUser" (nzOnCancel)="closeUser()" [nzFooter]="null">
+    <ng-container>
+        <nz-table #userTable1 [nzData]="listOfUser" nzSize="small" nzPaginationType="small" >
+            <thead>
+                <tr>
+                    <th nzWidth="15%" nzAlign="center">Account</th>
+                    <th nzWidth="15%" nzAlign="center">Nickname</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of userTable1.data">
+                    <td nzAlign="center" class="table_td">{{ data.account }}</td>
+                    <td nzAlign="center" class="table_td">{{ data.name }}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </ng-container>
+</nz-modal>-->
+
+<!-- 基础绑定查看 -->
+<!--
+<nz-modal [(nzVisible)]="visibleBts" [nzTitle]="titleBts" (nzOnCancel)="closeBts()" [nzFooter]="null">
+  <ng-container>
+    <nz-table #userTable1 [nzData]="listOfUser" nzSize="small" nzPaginationType="small" >
+      <thead>
+      <tr>
+        <th nzWidth="15%" nzAlign="center">NE CODE</th>
+        <th nzWidth="15%" nzAlign="center">NE NAME</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of userTable1.data">
+        <td nzAlign="center" class="table_td">{{ data.account }}</td>
+        <td nzAlign="center" class="table_td">{{ data.name }}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </ng-container>
+</nz-modal>
+-->
+

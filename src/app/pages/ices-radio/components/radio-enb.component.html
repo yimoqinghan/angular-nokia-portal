@@ -1,0 +1,192 @@
+<div nz-row class="app-title">
+  {{'enb.enb' | translate }}
+</div>
+<ng-template #filterContentTemplate>
+    <div nz-row style="width: 600px;">
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'enb.id' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="siteFilter.enbId">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+          <nz-form-label nzSpan="6">{{'enb.code' | translate }}</nz-form-label>
+          <nz-form-control nzSpan="16">
+            <input nz-input [(ngModel)]="siteFilter.siteCode">
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'enb.name' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="siteFilter.enbName">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'enb.ip' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="siteFilter.enbIp">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'enb.sw' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="siteFilter.version">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'enb.action' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <button nz-button nzType="primary" (click)="search()">{{'enb.search' | translate }}</button>
+                <nz-divider nzType="vertical"></nz-divider>
+                <button nz-button nzType="default" (click)="reset()">{{'enb.reset' | translate }}</button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</ng-template>
+
+<nz-form-item>
+    <nz-form-control nzSpan="24">
+        <button nzSize="small" nz-button nzType="primary" nz-popover [nzPopoverContent]="filterContentTemplate"  nzPopoverTrigger="click"  nzPopoverPlacement="right"><i nz-icon nzType="filter" nzTheme="outline"></i>{{'enb.filter' | translate }}</button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nzSize="small" nz-button nzType="primary" (click)="openEditModal()"><i nz-icon nzType="plus" nzTheme="outline"></i>{{'enb.add' | translate }}</button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nzSize="small" nz-button nzType="primary" (click)="export()"><i nz-icon nzType="cloud-download" nzTheme="outline"></i>{{'enb.export' | translate }}</button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nzSize="small" nz-button nzType="primary" (click)="downloadTemplate()"><i nz-icon nzType="file-excel" nzTheme="outline"></i>{{'enb.download' | translate }}</button>
+
+        <nz-divider nzType="vertical"></nz-divider>
+        <nz-upload [nzAction]="uploadApi" [nzBeforeUpload]="beforeUpload" (nzChange)="fileChange($event)" [nzFileList] = "fileList" [nzShowUploadList]="false">
+          <button nzSize="small" nz-button nzType="primary" ><i nz-icon nzType="cloud-upload" nzTheme="outline"></i>{{'enb.import' | translate }}</button>
+        </nz-upload>
+
+        <nz-divider nzType="vertical"></nz-divider>
+        <button *ngIf="currentUser.admin == 1" nzSize="small" nz-button nzType="primary" nzDanger (click)="showModal()"><i nz-icon nzType="file-excel" nzTheme="outline"></i>{{'enb.removeAll' | translate }}</button>
+
+        <nz-modal [(nzVisible)]="isDeleteVisible" [nzTitle]="'tip.delete' | translate "  (nzOnCancel)="cancel()" (nzOnOk)="removeAll()">
+          <p>{{'enb.removeTip' | translate }}</p>
+        </nz-modal>
+    </nz-form-control>
+</nz-form-item>
+
+<nz-table #tableSites [nzData]="listOfSite" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="totalItem"
+    [nzLoading]="dataLoading" [nzPageSizeOptions]="pageOptions" [nzFrontPagination]="false" nzShowQuickJumper nzShowSizeChanger
+    [nzShowTotal]="total_template_0" (nzPageIndexChange)="nzPageIndexChange($event)"
+    (nzPageSizeChange)="nzPageSizeChange($event)" [nzScroll]="tableScroll()">
+    <ng-template #total_template_0>
+      {{'enb.total' | translate }}: {{totalItem}}
+    </ng-template>
+    <thead>
+        <tr>
+          <th class="table_th" nzWidth="10%" nzAlign="center">{{'enb.id' | translate }}</th>
+          <th class="table_th" nzWidth="10%" nzAlign="center">{{'enb.code' | translate }}</th>
+          <th class="table_th" nzWidth="20%" nzAlign="center">{{'enb.name' | translate }}</th>
+          <th class="table_th" nzWidth="10%" nzAlign="center">{{'enb.ip' | translate }}</th>
+          <th class="table_th" nzWidth="10%" nzAlign="center">{{'enb.longitude' | translate }}</th>
+          <th class="table_th" nzWidth="10%" nzAlign="center">{{'enb.latitude' | translate }}</th>
+          <th class="table_th" nzWidth="10%" nzAlign="center">{{'enb.type' | translate }}</th>
+          <th class="table_th" nzWidth="10%" nzAlign="center">{{'enb.networkType' | translate }}</th>
+          <th class="table_th" nzWidth="20%" nzAlign="center">{{'enb.sw' | translate }}</th>
+          <th class="table_th" nzWidth="10%" nzAlign="center">{{'enb.action' | translate }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of tableSites.data">
+            <td class="table_td" nzAlign="center" [title]="data.neCode">{{data.neCode}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.siteCode">{{data.siteCode}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.neName">{{data.neName}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.ip">
+              <a  href="https://{{data.ip}}" target="_blank">{{data.ip}}</a>
+            </td>
+            <td class="table_td" nzAlign="center" [title]="data.enbGpsLongitude">{{data.enbGpsLongitude}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.enbGpsLatitude">{{data.enbGpsLatitude}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.btsType">{{data.btsType}}</td>
+          <td class="table_td" nzAlign="center" [title]="data.netWorkType">{{data.netWorkType}}</td>
+            <td class="table_td" nzAlign="center" [title]="data.neVersion">{{data.neVersion}}</td>
+            <td class="table_td" nzAlign="center">
+                <a (click)="editSite(data)" title="edit"><i nz-icon nzType="edit" nzTheme="outline"></i></a>
+                <nz-divider nzType="vertical"></nz-divider>
+<!--                <a (click)="deleteSite(data.id)" title="delete"><i nz-icon nzType="delete" nzTheme="outline"></i></a>-->
+<!--              <nz-divider nzType="vertical"></nz-divider>-->
+              <a (click)="showDeleteEnbModal(data.id)" title="delete"><i nz-icon nzType="delete" nzTheme="outline"></i></a>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="isDeleteEnb" [nzTitle]="'tip.delete' | translate "  (nzOnCancel)="cancel()" (nzOnOk)="deleteSite()">
+  <p>{{'enb.removeEnb' | translate }}</p>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="'enb.editEnb' | translate " (nzOnCancel)="closeEditModal()" (nzOnOk)="saveSite()">
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6" nzRequired>{{'enb.id' | translate }}</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <input nz-input [(ngModel)]="site.neCode">
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item style="width: 100%;">
+      <nz-form-label nzSpan="6" nzRequired>{{'enb.code' | translate }}</nz-form-label>
+      <nz-form-control nzSpan="16">
+        <input nz-input [(ngModel)]="site.siteCode">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6" nzRequired>{{'enb.name' | translate }}</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <input nz-input [(ngModel)]="site.enbName">
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6" nzRequired>{{'enb.ip' | translate }}</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <input nz-input [(ngModel)]="site.ip">
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item style="width: 100%;">
+      <nz-form-label nzSpan="6" nzRequired>{{'enb.type' | translate }}</nz-form-label>
+      <nz-form-control nzSpan="16">
+        <nz-select nzSize="small" nzShowSearch [(ngModel)]="site.btsType">
+          <nz-option  *ngFor="let type of btsTypes;" [nzLabel]="type" [nzValue]="type"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+  <nz-form-item style="width: 100%;">
+    <nz-form-label nzSpan="6" nzRequired>{{'enb.networkType' | translate }}</nz-form-label>
+    <nz-form-control nzSpan="16">
+      <nz-select nzSize="small" nzShowSearch [(ngModel)]="site.netWorkType">
+        <nz-option  *ngFor="let network of networkTypes;" [nzLabel]="network" [nzValue]="network"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6">{{'enb.sw' | translate }}</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <input nz-input [(ngModel)]="site.neVersion">
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6" nzRequired>{{'enb.latitude' | translate }}</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <input nz-input [(ngModel)]="site.gpsLatitude">
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item style="width: 100%;">
+        <nz-form-label nzSpan="6" nzRequired>{{'enb.longitude' | translate }}</nz-form-label>
+        <nz-form-control nzSpan="16">
+            <input nz-input [(ngModel)]="site.gpsLongitude">
+        </nz-form-control>
+    </nz-form-item>
+</nz-modal>

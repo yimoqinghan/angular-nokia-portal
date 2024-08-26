@@ -1,0 +1,117 @@
+<div nz-row class="app-title">
+  {{'status.status' | translate }}
+</div>
+<ng-template #filterContentTemplate_1>
+    <div nz-row style="width: 800px;">
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'kpi.time' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <nz-range-picker [nzShowTime]="{ nzFormat: 'HH:mm' }" nzFormat="yyyy-MM-dd HH:mm:00" [(ngModel)]="dateRange" (ngModelChange)="dateRangeChange($event)"></nz-range-picker>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'enb.id' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="cellStateFilter.enbId">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'enb.name' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <input nz-input [(ngModel)]="cellStateFilter.enbName">
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'status.workState' | translate }}</nz-form-label>
+
+            <nz-form-control  nzSpan="16">
+                    <nz-select  [(ngModel)]="cellStateFilter.enbState" >
+                      <nz-option *ngFor="let option of enbStateList" [nzLabel]="option.name" [nzValue]="option.code"></nz-option>
+                    </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'status.TRSState' | translate }}</nz-form-label>
+            <nz-form-control  nzSpan="16">
+              <nz-select  [(ngModel)]="cellStateFilter.trsState" >
+                    <nz-option *ngFor="let option of trsStateList" [nzLabel]="option.name" [nzValue]="option.code"></nz-option>
+              </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'status.cellAdminState' | translate }}</nz-form-label>
+            <nz-form-control  nzSpan="16">
+               <nz-select  [(ngModel)]="cellStateFilter.adminState" >
+                    <nz-option *ngFor="let option of adminStateList" [nzLabel]="option.name" [nzValue]="option.code"></nz-option>
+               </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'status.cellOperationalState' | translate }}</nz-form-label>
+            <nz-form-control  nzSpan="16">
+                <nz-select  [(ngModel)]="cellStateFilter.operationalState" >
+                    <nz-option *ngFor="let option of operationalStateList" [nzLabel]="option.name" [nzValue]="option.code"></nz-option>
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item style="width: 100%;">
+            <nz-form-label nzSpan="6">{{'enb.action' | translate }}</nz-form-label>
+            <nz-form-control nzSpan="16">
+                <button nz-button nzType="primary"  (click)="search()" >{{'enb.search' | translate }}</button>
+                <nz-divider nzType="vertical"></nz-divider>
+                <button nz-button nzType="default" (click)="clearFilter()">{{'enb.reset' | translate }}</button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+</ng-template>
+
+<nz-form-item>
+    <nz-form-control nzSpan="24">
+        <button nzSize="small" nz-button nzType="primary" nz-popover [nzPopoverContent]="filterContentTemplate_1" nzPopoverTrigger="click" nzPopoverPlacement="bottomLeft" title="filter"><i nz-icon nzType="filter"></i>{{'status.filter' | translate }}</button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nzSize="small" nz-button nzType="primary" title="export"  (click) = "exportState()"><i nz-icon nzType="cloud-download" nzTheme="outline"></i>{{'status.export' | translate }}</button>
+    </nz-form-control>
+</nz-form-item>
+<nz-table nzBordered #tableStates [nzData]="listOfCellState" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzTotal]="totalItem"
+    [nzLoading]="dataLoading" [nzPageSizeOptions]="pageOptions" [nzFrontPagination]="false" nzShowQuickJumper nzShowSizeChanger
+    [nzShowTotal]="total_template_0" (nzPageIndexChange)="nzPageIndexChange($event)"
+    (nzPageSizeChange)="nzPageSizeChange($event)" [nzScroll]= "tableScroll()">
+      <ng-template #total_template_0>
+        {{'enb.total' | translate }}: {{totalItem}}
+      </ng-template>
+    <thead>
+        <tr>
+          <th class="table_th" nzWidth="8%" nzAlign="center">{{'kpi.period' | translate }}</th>
+          <th class="table_th" nzWidth="4%" nzAlign="center">{{'enb.id' | translate }}</th>
+          <th class="table_th" nzWidth="12%" nzAlign="center">{{'enb.name' | translate }}</th>
+          <th class="table_th" nzWidth="13%" nzAlign="center">{{'enb.sw' | translate }}</th>
+          <th class="table_th" nzWidth="8%" nzAlign="center">{{'status.workState' | translate }}</th>
+          <th class="table_th" nzWidth="5%" nzAlign="center">{{'status.TRSState' | translate }}</th>
+          <th class="table_th" nzWidth="5%" nzAlign="center">{{'kpi.cellId' | translate }}</th>
+          <th class="table_th" nzWidth="7%" nzAlign="center">{{'status.cellAdminState' | translate }}</th>
+          <th class="table_th" nzWidth="10%" nzAlign="center">{{'status.cellOperationalState' | translate }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of tableStates.data">
+            <td class="table_td" nzWidth="8%" nzAlign="center" [title]="data.period">{{data.period}}</td>
+            <td class="table_td" nzWidth="4%" nzAlign="center" [title]="data.enbId">{{data.neCode}}</td>
+            <td class="table_td" nzWidth="5%" nzAlign="center" [title]="data.cellId">{{data.cellId}}</td>
+            <td class="table_td" nzWidth="10%" nzAlign="center" [title]="data.enbName">{{data.neName}}</td>
+
+<!--            <td class="table_td" nzWidth="13%" nzAlign="center" [title]="data.enbSW">{{data.enbSw}}</td>-->
+            <td class="table_td" nzWidth="8%" nzAlign="center" [title]="data.enbState">{{data.enbWrokingState}}</td>
+            <td class="table_td" nzWidth="5%" nzAlign="center" [title]="data.trsState">{{data.trsStatus}}</td>
+            <td class="table_td" nzWidth="5%" nzAlign="center" [title]="data.adminState">{{data.cellAdminState}}</td>
+            <td class="table_td" nzWidth="5%" nzAlign="center" [title]="data.blockingState">{{data.blockingState}}</td>
+            <td class="table_td" nzWidth="10%" nzAlign="center" [title]="data.operationalState">{{data.cellOperationalState}}</td>
+<!--            <td class="table_td" nzWidth="10%" nzAlign="center" [title]="data.remarks">{{data.remarks}}</td>-->
+        </tr>
+    </tbody>
+</nz-table>

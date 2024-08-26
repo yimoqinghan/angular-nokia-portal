@@ -1,0 +1,51 @@
+<div nz-row class="app-title">
+  {{'overview.overview' | translate }}
+</div>
+<!-- 全网基站的 告警个数、退服基站或小区个数、重要指标超过门限的小区个数 -->
+<nz-row nzGutter="24" class="dashboard">
+  <nz-col style="width: 20%;" class="dashboard-content">
+    <nz-statistic [nzValue]="totalSite | number" [nzTitle]="'overview.totalSites' | translate "></nz-statistic>
+  </nz-col>
+  <nz-col style="width: 20%;" class="dashboard-content">
+    <nz-statistic [nzValue]="totalCell | number" [nzTitle]="'overview.totalCell' | translate "></nz-statistic>
+  </nz-col>
+  <nz-col style="width: 20%;" class="dashboard-content">
+    <nz-statistic [nzValue]="activeAlarm | number" [nzTitle]="'alarm.active' | translate "></nz-statistic>
+  </nz-col>
+  <nz-col style="width: 20%;" class="dashboard-content">
+    <nz-statistic [nzValue]="outageStation | number" [nzTitle]="'overview.outageSites' | translate "></nz-statistic>
+  </nz-col>
+  <nz-col style="width: 20%;" class="dashboard-content">
+    <nz-statistic [nzValue]="outageCellSite | number" [nzTitle]="'overview.sitesWithOutageCell' | translate "></nz-statistic>
+  </nz-col>
+</nz-row>
+
+<nz-row nzGutter="24" class="dashboard-chart">
+    <nz-col nzSpan="6">
+        <div echarts [options]="chart01" style="height: 100%;"></div>
+    </nz-col>
+    <nz-col nzSpan="6">
+        <div echarts [options]="chart02" style="height: 100%;"></div>
+    </nz-col>
+    <nz-col nzSpan="6">
+        <div echarts [options]="chart03" style="height: 100%;"></div>
+    </nz-col>
+    <nz-col nzSpan="6">
+        <div echarts [options]="chart04" style="height: 100%;"></div>
+    </nz-col>
+</nz-row>
+
+<nz-row nzGutter="24" class="dashboard-chart">
+    <nz-col nzSpan="6">
+        <div echarts [options]="chart05" style="height: 100%;"></div>
+    </nz-col>
+    <nz-col nzSpan="6">
+        <div echarts [options]="chart06" style="height: 100%;"></div>
+    </nz-col>
+    <nz-col nzSpan="6">
+        <div echarts [options]="chart07" style="height: 100%;"></div>
+    </nz-col>
+    <nz-col nzSpan="6">
+        <div echarts [options]="chart08" style="height: 100%;"></div>
+    </nz-col>
+</nz-row>
